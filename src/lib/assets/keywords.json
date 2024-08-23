@@ -1,0 +1,683 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "게임",
+      "genres": [
+        {
+          "id": 2,
+          "name": "액션"
+        },
+        {
+          "id": 4,
+          "name": "퍼즐"
+        },
+        {
+          "id": 3,
+          "name": "어드벤처"
+        },
+        {
+          "id": 1,
+          "name": "시뮬레이션"
+        }
+      ],
+      "platforms": [
+        {
+          "id": 27,
+          "name": "왓챠",
+          "order_top": true,
+          "domain": "watcha"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "공연/전시",
+      "genres": [
+        {
+          "id": 6,
+          "name": "연극"
+        },
+        {
+          "id": 19,
+          "name": "전시"
+        },
+        {
+          "id": 5,
+          "name": "뮤지컬"
+        },
+        {
+          "id": 7,
+          "name": "판소리극"
+        }
+      ],
+      "platforms": [
+        {
+          "id": 27,
+          "name": "왓챠",
+          "order_top": true,
+          "domain": "watcha"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "만화",
+      "genres": [
+        {
+          "id": 8,
+          "name": "웹툰"
+        },
+        {
+          "id": 9,
+          "name": "출판만화"
+        }
+      ],
+      "platforms": [
+        {
+          "id": 27,
+          "name": "왓챠",
+          "order_top": true,
+          "domain": "watcha"
+        },
+        {
+          "id": 28,
+          "name": "왓챠",
+          "order_top": false,
+          "domain": "watcha"
+        },
+        {
+          "id": 29,
+          "name": "왓챠",
+          "order_top": false,
+          "domain": "watcha"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "서적",
+      "genres": [
+        {
+          "id": 11,
+          "name": "소설"
+        },
+        {
+          "id": 10,
+          "name": "비소설"
+        },
+        {
+          "id": 12,
+          "name": "에세이"
+        }
+      ],
+      "platforms": [
+        {
+          "id": 27,
+          "name": "왓챠",
+          "order_top": true,
+          "domain": "watcha"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "영상",
+      "genres": [
+        {
+          "id": 16,
+          "name": "영화"
+        },
+        {
+          "id": 17,
+          "name": "예능"
+        },
+        {
+          "id": 14,
+          "name": "드라마"
+        },
+        {
+          "id": 18,
+          "name": "유튜브"
+        },
+        {
+          "id": 13,
+          "name": "다큐멘터리"
+        },
+        {
+          "id": 15,
+          "name": "애니메이션"
+        }
+      ],
+      "platforms": [
+        {
+          "id": 27,
+          "name": "왓챠",
+          "order_top": true,
+          "domain": "watcha"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    {
+      "id": 67,
+      "name": "SF"
+    },
+    {
+      "id": 1,
+      "name": "가족"
+    },
+    {
+      "id": 39,
+      "name": "건강"
+    },
+    {
+      "id": 3,
+      "name": "게임방송"
+    },
+    {
+      "id": 4,
+      "name": "경제"
+    },
+    {
+      "id": 7,
+      "name": "공포"
+    },
+    {
+      "id": 8,
+      "name": "공학"
+    },
+    {
+      "id": 9,
+      "name": "과학"
+    },
+    {
+      "id": 13,
+      "name": "레즈비언"
+    },
+    {
+      "id": 14,
+      "name": "리뷰"
+    },
+    {
+      "id": 15,
+      "name": "먹방"
+    },
+    {
+      "id": 17,
+      "name": "미러링"
+    },
+    {
+      "id": 18,
+      "name": "미스터리"
+    },
+    {
+      "id": 20,
+      "name": "복수"
+    },
+    {
+      "id": 5,
+      "name": "사회"
+    },
+    {
+      "id": 22,
+      "name": "생존"
+    },
+    {
+      "id": 23,
+      "name": "성"
+    },
+    {
+      "id": 24,
+      "name": "성의학"
+    },
+    {
+      "id": 25,
+      "name": "성장"
+    },
+    {
+      "id": 26,
+      "name": "스릴러"
+    },
+    {
+      "id": 27,
+      "name": "스포츠"
+    },
+    {
+      "id": 28,
+      "name": "시대물"
+    },
+    {
+      "id": 68,
+      "name": "신화"
+    },
+    {
+      "id": 29,
+      "name": "실화"
+    },
+    {
+      "id": 30,
+      "name": "아포칼립스"
+    },
+    {
+      "id": 31,
+      "name": "액션"
+    },
+    {
+      "id": 32,
+      "name": "여성주의"
+    },
+    {
+      "id": 33,
+      "name": "역사"
+    },
+    {
+      "id": 34,
+      "name": "예능"
+    },
+    {
+      "id": 35,
+      "name": "예술/문화"
+    },
+    {
+      "id": 36,
+      "name": "오픈월드"
+    },
+    {
+      "id": 37,
+      "name": "요리"
+    },
+    {
+      "id": 38,
+      "name": "우정"
+    },
+    {
+      "id": 41,
+      "name": "의학"
+    },
+    {
+      "id": 42,
+      "name": "인물"
+    },
+    {
+      "id": 43,
+      "name": "인생"
+    },
+    {
+      "id": 45,
+      "name": "일상"
+    },
+    {
+      "id": 46,
+      "name": "잠입"
+    },
+    {
+      "id": 48,
+      "name": "전쟁"
+    },
+    {
+      "id": 49,
+      "name": "정보"
+    },
+    {
+      "id": 50,
+      "name": "정치"
+    },
+    {
+      "id": 51,
+      "name": "젠더프리",
+      "description": "테스트"
+    },
+    {
+      "id": 53,
+      "name": "종교"
+    },
+    {
+      "id": 55,
+      "name": "추리"
+    },
+    {
+      "id": 56,
+      "name": "캐주얼"
+    },
+    {
+      "id": 57,
+      "name": "코미디"
+    },
+    {
+      "id": 58,
+      "name": "탈가정청소년"
+    },
+    {
+      "id": 59,
+      "name": "탈코르셋"
+    },
+    {
+      "id": 60,
+      "name": "탐험"
+    },
+    {
+      "id": 61,
+      "name": "판타지"
+    },
+    {
+      "id": 62,
+      "name": "퍼즐"
+    },
+    {
+      "id": 64,
+      "name": "학교"
+    },
+    {
+      "id": 66,
+      "name": "히어로"
+    }
+  ],
+  "cautions": [
+    {
+      "id": 9,
+      "name": "성범죄"
+    },
+    {
+      "id": 16,
+      "name": "자해"
+    },
+    {
+      "id": 19,
+      "name": "청불"
+    },
+    {
+      "id": 1,
+      "name": "가스라이팅"
+    },
+    {
+      "id": 2,
+      "name": "가정폭력"
+    },
+    {
+      "id": 3,
+      "name": "고어"
+    },
+    {
+      "id": 5,
+      "name": "남감독"
+    },
+    {
+      "id": 6,
+      "name": "남연출가"
+    },
+    {
+      "id": 7,
+      "name": "남원작자"
+    },
+    {
+      "id": 21,
+      "name": "남작가"
+    },
+    {
+      "id": 11,
+      "name": "여남공동감독"
+    },
+    {
+      "id": 22,
+      "name": "여남공동연출"
+    },
+    {
+      "id": 23,
+      "name": "여남공동저자"
+    },
+    {
+      "id": 18,
+      "name": "작가/감독 성별미상"
+    }
+  ],
+  "platforms": [
+    {
+      "id": 27,
+      "name": "왓챠",
+      "order_top": true,
+      "domain": "watcha"
+    },
+    {
+      "id": 35,
+      "name": "티빙",
+      "order_top": true,
+      "domain": "tving"
+    },
+    {
+      "id": 5,
+      "name": "네이버",
+      "order_top": true,
+      "domain": "comic.naver"
+    },
+    {
+      "id": 29,
+      "name": "웨이브",
+      "order_top": true,
+      "domain": "wavve"
+    },
+    {
+      "id": 31,
+      "name": "유튜브",
+      "order_top": true,
+      "domain": "youtube"
+    },
+    {
+      "id": 3,
+      "name": "구글무비",
+      "order_top": true,
+      "domain": "play.google.com/store/movies"
+    },
+    {
+      "id": 8,
+      "name": "넷플릭스",
+      "order_top": true,
+      "domain": "netflix"
+    },
+    {
+      "id": 12,
+      "name": "리디북스",
+      "order_top": true,
+      "domain": "ridibooks"
+    },
+    {
+      "id": 10,
+      "name": "카카오웹툰",
+      "order_top": true,
+      "domain": "webtoon.kakao"
+    },
+    {
+      "id": 53,
+      "name": "쿠팡플레이",
+      "order_top": true,
+      "domain": "coupangplay"
+    },
+    {
+      "id": 6,
+      "name": "네이버시리즈",
+      "order_top": true,
+      "domain": "series.naver"
+    },
+    {
+      "id": 46,
+      "name": "디즈니플러스",
+      "order_top": true,
+      "domain": "disneyplus"
+    },
+    {
+      "id": 7,
+      "name": "네이버시리즈온",
+      "order_top": true,
+      "domain": "serieson.naver"
+    },
+    {
+      "id": 17,
+      "name": "봄툰",
+      "order_top": false,
+      "domain": "bomtoon"
+    },
+    {
+      "id": 18,
+      "name": "스팀",
+      "order_top": false,
+      "domain": "steampowered"
+    },
+    {
+      "id": 11,
+      "name": "딜리헙",
+      "order_top": false,
+      "domain": "dillyhub"
+    },
+    {
+      "id": 16,
+      "name": "버프툰",
+      "order_top": false,
+      "domain": "bufftoon"
+    },
+    {
+      "id": 19,
+      "name": "아마존",
+      "order_top": false,
+      "domain": "primevideo"
+    },
+    {
+      "id": 20,
+      "name": "알라딘",
+      "order_top": false,
+      "domain": "aladin"
+    },
+    {
+      "id": 50,
+      "name": "인스타",
+      "order_top": false,
+      "domain": "instagram"
+    },
+    {
+      "id": 32,
+      "name": "코미코",
+      "order_top": false,
+      "domain": "comico"
+    },
+    {
+      "id": 34,
+      "name": "텀블벅",
+      "order_top": false,
+      "domain": "tumblbug"
+    },
+    {
+      "id": 49,
+      "name": "트위터",
+      "order_top": false,
+      "domain": "twitter"
+    },
+    {
+      "id": 2,
+      "name": "교보문고",
+      "order_top": false,
+      "domain": "kyobobook"
+    },
+    {
+      "id": 21,
+      "name": "애플티비",
+      "order_top": false,
+      "domain": "tv.apple"
+    },
+    {
+      "id": 22,
+      "name": "앱스토어",
+      "order_top": false,
+      "domain": "apps.apple"
+    },
+    {
+      "id": 45,
+      "name": "인터파크",
+      "order_top": false,
+      "domain": "interpark"
+    },
+    {
+      "id": 52,
+      "name": "티켓링크",
+      "order_top": false,
+      "domain": "ticketlink"
+    },
+    {
+      "id": 54,
+      "name": "포스타입",
+      "order_top": false,
+      "domain": "postype"
+    },
+    {
+      "id": 15,
+      "name": "밀리의서재",
+      "order_top": false,
+      "domain": "millie"
+    },
+    {
+      "id": 24,
+      "name": "에픽게임즈",
+      "order_top": false,
+      "domain": "epicgames"
+    },
+    {
+      "id": 47,
+      "name": "플랫폼없음",
+      "order_top": false,
+      "domain": null
+    },
+    {
+      "id": 4,
+      "name": "구글플레이스토어",
+      "order_top": false,
+      "domain": "play.google.com/store/apps"
+    },
+    {
+      "id": 1,
+      "name": "경기도사이버도서관",
+      "order_top": false,
+      "domain": "library"
+    },
+    {
+      "id": 9,
+      "name": "닌텐도온라인스토어",
+      "order_top": false,
+      "domain": "nintendo"
+    },
+    {
+      "id": 36,
+      "name": "플레이스테이션스토어",
+      "order_top": false,
+      "domain": "playstation"
+    },
+    {
+      "id": 14,
+      "name": "밀리의 서재",
+      "order_top": false,
+      "domain": "millie"
+    },
+    {
+      "id": 25,
+      "name": "예스24",
+      "order_top": false,
+      "domain": "yes24"
+    },
+    {
+      "id": 26,
+      "name": "EA",
+      "order_top": false,
+      "domain": "www.ea"
+    },
+    {
+      "id": 40,
+      "name": "KBS",
+      "order_top": false,
+      "domain": "kbs"
+    },
+    {
+      "id": 41,
+      "name": "SBS",
+      "order_top": false,
+      "domain": "sbs"
+    }
+  ]
+}

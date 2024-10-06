@@ -18,5 +18,6 @@ export default defineConfig({
   plugins: [sveltekit(), mkcert()],
   server: {
     https: getHttpsOptions(),
+    proxy: {} // TypeError: Could not convert argument of type symbol to string. 에러 위함 참고:  https://www.reddit.com/r/sveltejs/comments/1co07iz/certification_problems/
   },
 });

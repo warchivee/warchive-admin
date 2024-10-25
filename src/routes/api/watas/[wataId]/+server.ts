@@ -50,24 +50,24 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
       });
 
       await updateMappings(
-        tx.wataKeywordMapping,
-        "keywordId",
-        +wataId,
-        keywords
+          tx.wataKeywordMapping,
+          "keywordId",
+          +wataId,
+          keywords
       );
 
       await updateMappings(
-        tx.wataCautionMapping,
-        "cautionId",
-        +wataId,
-        cautions
+          tx.wataCautionMapping,
+          "cautionId",
+          +wataId,
+          cautions
       );
 
       await updateMappings(
-        tx.wataPlatformMapping,
-        "platformId",
-        +wataId,
-        platforms
+          tx.wataPlatformMapping,
+          "platformId",
+          +wataId,
+          platforms
       );
 
       return updateWata;
@@ -81,10 +81,10 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
 };
 
 async function updateMappings(
-  mappingTable: any,
-  mappingField: string,
-  wataId: number,
-  newItems: { id: number; url?: string }[]
+    mappingTable: any,
+    mappingField: string,
+    wataId: number,
+    newItems: { id: number; url?: string }[]
 ) {
   const existingMappings = await mappingTable.findMany({
     where: { wataId },
@@ -92,13 +92,13 @@ async function updateMappings(
   });
 
   const existingItemIds = existingMappings.map(
-    (mapping: any) => mapping[mappingField]
+      (mapping: any) => mapping[mappingField]
   );
 
   const itemsToAdd = newItems.filter(({ id }) => !existingItemIds.includes(id));
 
   const itemsToRemove = existingItemIds.filter(
-    (itemId: number) => !newItems?.map((ni) => ni.id)?.includes(itemId)
+      (itemId: number) => !newItems?.map((ni) => ni.id)?.includes(itemId)
   );
 
   if (itemsToRemove.length > 0) {
@@ -122,3 +122,49 @@ async function updateMappings(
     });
   }
 }
+
+export const DELETE: RequestHandler = async ({ params, locals }) => {
+  try {
+    const userId = await authenticate(locals);
+
+    const { wataId } = params;
+
+    if (!wataId) {
+      return sendErrorResponse("Fail to find Wata Id", 404);
+    }
+
+    const deleteWata = await db.$transaction(async (tx) => {
+      await tx.wataKeywordMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      await tx.wataCautionMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      await tx.wataPlatformMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      const deleteWata = await tx.wata.delete({
+        where: {
+          id: +wataId,
+        },
+      });
+
+      return deleteWata;
+    });
+
+    return sendSuccessResponse(deleteWata, 200);
+
+  } catch (error) {
+    console.error("Failed to delete wata:", error);
+    return sendErrorResponse("Failed to delete wata", 500);
+  }
+};

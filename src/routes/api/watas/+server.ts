@@ -89,13 +89,40 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   const page = parseInt(url.searchParams.get("page") || "1", 10);
 
   const skip = (page - 1) * pageSize;
+  const titleFilter = url.searchParams.get("title") || "";
+  const genreFilter = url.searchParams.get("genre") || "";
 
   try {
-    const totalCount = await db.wata.count();
+    const totalCount = await db.wata.count({
+      where: {
+        ...(titleFilter && {
+          title: {
+            contains: titleFilter,
+            mode: "insensitive",
+          },
+        }),
+        ...(genreFilter && {
+          genreId: parseInt(genreFilter, 10),
+        }),
+      },
+    });
+
+
 
     const watas = await db.wata.findMany({
       skip,
       take: pageSize,
+      where: {
+        ...(titleFilter && {
+          title: {
+            contains: titleFilter,
+            mode: "insensitive",
+          },
+        }),
+        ...(genreFilter && {
+          genreId: parseInt(genreFilter, 10),
+        }),
+      },
       include: {
         genre: {
           select: {

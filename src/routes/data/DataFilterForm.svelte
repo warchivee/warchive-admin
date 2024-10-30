@@ -1,14 +1,15 @@
 <script lang="ts">
-  import axios from "$lib/axios";
-
-  import { toast } from "svelte-sonner";
   import Button from "$lib/components/ui/button/button.svelte";
+  import * as Drawer from "$lib/components/ui/drawer";
 
-  import { AxiosError } from "axios";
-  import { LOGIN_PATH } from "$lib/endpoints.const";
-  import { goto } from "$app/navigation";
+  //utils
+  import FilterIcon from "lucide-svelte/icons/filter";
+
   import { Label } from "$lib/components/ui/label";
   import RangeDatePicker from "$lib/components/datepicker/range-date-picker.svelte";
+
+  export let handleSubmit = (searchConditions: Record<string, any>) => {};
+  let open = false;
 
   const filterValues: Record<string, { name: string; values: any[] }> = {
     categories: {
@@ -93,19 +94,11 @@
   };
 
   const formData: Record<string, any> = {
-    page: 1,
-    page_size: 10,
     title: "",
-    creators: "",
     label: [],
     categories: [],
-    genres: [],
-    keywords: [],
-    cautions: [],
-    platforms: [],
-    updateStartDate: "",
-    updateEndDate: "",
-    isPublished: false,
+    updateDate: null,
+    isPublished: null,
     needWriteItems: [],
   };
 
@@ -123,93 +116,133 @@
     formData[itemKey] = [];
   }
 
-  const handleSubmit = async ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    try {
-      await axios.post(LOGIN_PATH, {
-        account: username,
-        password,
-      });
-
-      toast.success("Logged in successfully");
-      goto("/data");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.message || "Login failed");
-      } else {
-        toast.error("An unknown error occurred");
-      }
-    }
-  };
+  function resetAllItems() {
+    formData.title = "";
+    formData.label = [];
+    formData.categories = [];
+    formData.updateDate = null;
+    formData.isPublished = null;
+    formData.needWriteItems = [];
+  }
 </script>
 
-<div class="space-y-3">
-  {#each Object.keys(filterValues) as filterKey}
-    <div class="space-y-2">
-      <div class="flex gap-2">
-        <h6 class="font-bold text-sm">{filterValues[filterKey].name}</h6>
-        <Button
-          variant="ghost"
-          class="text-gray-400 h-[20px] w-[40px] text-xs"
-          on:click={() => {
-            resetItems(filterKey);
-          }}>초기화</Button
+<Drawer.Root shouldScaleBackground={false} bind:open>
+  <Drawer.Trigger let:builder>
+    <div class="fixed end-6 bottom-6">
+      <Button builders={[builder]} class="w-14 h-14 rounded-full shadow-lg">
+        <FilterIcon />
+      </Button>
+    </div></Drawer.Trigger
+  >
+  <Drawer.Content>
+    <Drawer.Header class="flex flex-row justify-between">
+      <Drawer.Title>데이터 검색</Drawer.Title>
+      <Drawer.Close
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width={1.5}
+          stroke="currentColor"
+          class="size-6"
         >
-      </div>
-      <ul
-        class="grid grid-cols-3 items-center w-full bg-white rounded-md overflow-hidden"
-      >
-        {#each filterValues[filterKey].values as value}
-          {@const checked = formData[filterKey].includes(value.id)}
-          <li class="w-full {checked ? 'bg-gray-200' : ''} hover:bg-gray-300">
-            <Label
-              class="text-[13px] cursor-pointer flex w-full p-2 truncate"
-              for={`${filterKey}-${value.id}`}>{value.name}</Label
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </Drawer.Close>
+    </Drawer.Header>
+
+    <div class="p-8">
+      <div class="space-y-3">
+        {#each Object.keys(filterValues) as filterKey}
+          <div class="space-y-2">
+            <div class="flex gap-2">
+              <h6 class="font-bold text-sm">{filterValues[filterKey].name}</h6>
+              <Button
+                variant="ghost"
+                class="text-gray-400 h-[20px] w-[40px] text-xs"
+                on:click={() => {
+                  resetItems(filterKey);
+                }}>초기화</Button
+              >
+            </div>
+            <ul
+              class="grid grid-cols-3 items-center w-full bg-white rounded-md overflow-hidden"
             >
-            <input
-              hidden
-              type="checkbox"
-              id={`${filterKey}-${value.id}`}
-              name={filterKey}
-              value={value.id}
-              on:change={(e) => {
-                if (!(e.target instanceof HTMLInputElement)) {
-                  return;
-                }
+              {#each filterValues[filterKey].values as value}
+                {@const checked = formData[filterKey].includes(value.id)}
+                <li
+                  class="w-full {checked
+                    ? 'bg-gray-200'
+                    : ''} hover:bg-gray-300"
+                >
+                  <Label
+                    class="text-[13px] cursor-pointer flex w-full p-2 truncate"
+                    for={`${filterKey}-${value.id}`}>{value.name}</Label
+                  >
+                  <input
+                    hidden
+                    type="checkbox"
+                    id={`${filterKey}-${value.id}`}
+                    name={filterKey}
+                    value={value.id}
+                    on:change={(e) => {
+                      if (!(e.target instanceof HTMLInputElement)) {
+                        return;
+                      }
 
-                if (e.target.checked) {
-                  addItem(filterKey, value.id);
-                } else {
-                  removeItem(filterKey, value.id);
-                }
-              }}
-              {checked}
-            />
-          </li>
+                      if (e.target.checked) {
+                        addItem(filterKey, value.id);
+                      } else {
+                        removeItem(filterKey, value.id);
+                      }
+                    }}
+                    {checked}
+                  />
+                </li>
+              {/each}
+            </ul>
+          </div>
+
+          <hr />
         {/each}
-      </ul>
+
+        <div class="space-y-2">
+          <div class="flex gap-2">
+            <h6 class="font-bold text-sm">마지막 수정일</h6>
+            <Button
+              variant="ghost"
+              class="text-gray-400 h-[20px] w-[40px] text-xs"
+              on:click={() => {
+                formData.updateDate = null;
+              }}>초기화</Button
+            >
+          </div>
+          <RangeDatePicker bind:value={formData.updateDate} />
+        </div>
+      </div>
     </div>
 
-    <hr />
-  {/each}
-
-  <div class="space-y-2">
-    <div class="flex gap-2">
-      <h6 class="font-bold text-sm">마지막 수정일</h6>
+    <Drawer.Footer class="flex flex-row-reverse">
       <Button
-        variant="ghost"
-        class="text-gray-400 h-[20px] w-[40px] text-xs"
+        class="w-[120px]"
         on:click={() => {
-          formData.updateStartDate = "";
-          formData.updateEndDate = "";
-        }}>초기화</Button
+          handleSubmit(formData);
+          open = false;
+        }}>검색</Button
       >
-    </div>
-    <RangeDatePicker />
-  </div>
-</div>
+      <Button
+        class="w-[120px]"
+        variant="ghost"
+        on:click={() => {
+          resetAllItems();
+          handleSubmit(formData);
+          open = false;
+        }}>전체 초기화</Button
+      >
+    </Drawer.Footer>
+  </Drawer.Content>
+</Drawer.Root>

@@ -1,6 +1,5 @@
 <script lang="ts">
   //components
-  import * as Drawer from "$lib/components/ui/drawer";
   import * as Pagination from "$lib/components/ui/pagination";
   import Button from "$lib/components/ui/button/button.svelte";
   import Input from "$lib/components/ui/input/input.svelte";
@@ -16,6 +15,7 @@
   let inputPage = "";
   let pageSize = 10;
   let currentPage = 1;
+  let searchConditions: Record<string, any> = {};
 
   let totalCount = 0;
 
@@ -25,9 +25,48 @@
   //utils
   async function fetchData() {
     try {
-      const response = await axiosInstance(
-        `/watas?page=${currentPage}&pageSize=${pageSize}`
-      );
+      const {
+        title,
+        categories,
+        label,
+        updateDate,
+        isPublished,
+        needWriteItems,
+      } = searchConditions;
+
+      const params = {
+        page: currentPage,
+        pageSize: pageSize,
+        ...(title && { title }),
+        ...(categories && categories.length > 0 && { categories }),
+        ...(label && label.length > 0 && { label: label.join(",") }),
+        ...(updateDate?.start && {
+          updateStartDate: new Date(updateDate.start)?.toLocaleDateString(
+            "en-CA"
+          ),
+        }),
+        ...(updateDate?.end && {
+          updateEndDate: new Date(updateDate?.end)?.toLocaleDateString("en-CA"),
+        }),
+        ...(isPublished && { isPublished }),
+        ...(needWriteItems &&
+          needWriteItems.length > 0 && {
+            needWriteItems: needWriteItems.join(","),
+          }),
+      };
+
+      let queryString = "";
+
+      if (params) {
+        queryString += Object.keys(params)
+          .map(
+            (key) =>
+              `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+          )
+          .join("&");
+      }
+
+      const response = await axiosInstance(`/watas?${queryString}`);
       const newData = response.data;
 
       totalCount = newData.totalCount;
@@ -55,8 +94,6 @@
     } else {
       currentPage = page;
     }
-
-    fetchData();
   }
 
   onMount(async () => {
@@ -144,42 +181,14 @@
   </article>
 </section>
 
-<Drawer.Root shouldScaleBackground={false}>
-  <Drawer.Trigger let:builder>
-    <div class="fixed end-6 bottom-6">
-      <Button builders={[builder]} class="w-14 h-14 rounded-full shadow-lg"
-        >Filter</Button
-      >
-    </div></Drawer.Trigger
-  >
-  <Drawer.Content>
-    <Drawer.Header class="flex flex-row justify-between">
-      <Drawer.Title>데이터 검색</Drawer.Title>
-      <Drawer.Close
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width={1.5}
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
-        </svg>
-      </Drawer.Close>
-    </Drawer.Header>
+<DataFilterForm
+  handleSubmit={async (formData) => {
+    searchConditions = formData;
 
-    <div class="p-8">
-      <DataFilterForm />
-    </div>
-
-    <Drawer.Footer class="flex flex-row-reverse">
-      <Button class="w-[120px]">검색</Button>
-      <Button class="w-[120px]" variant="ghost">전체 초기화</Button>
-    </Drawer.Footer>
-  </Drawer.Content>
-</Drawer.Root>
+    if (currentPage === 1) {
+      await fetchData();
+    } else {
+      currentPage = 1;
+    }
+  }}
+/>

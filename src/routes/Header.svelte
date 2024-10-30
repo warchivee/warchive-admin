@@ -35,10 +35,6 @@
   function handleSearchClick() {
     console.log("Search button clicked");
   }
-
-  function handleAddClick() {
-    console.log("Add button clicked");
-  }
 </script>
 
 <div>{$page.data?.user?.nickname}</div>

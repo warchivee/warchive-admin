@@ -122,3 +122,50 @@ async function updateMappings(
     });
   }
 }
+
+export const DELETE: RequestHandler = async ({ params, locals }) => {
+  try {
+    const userId = await authenticate(locals);
+
+    const { wataId } = params;
+
+    if (!wataId) {
+      return sendErrorResponse("Fail to find Wata Id", 404);
+    }
+
+    //todo: isPublished 가 true 면 삭제 X (게시된 데이터는 삭제 X)
+
+    const deleteWata = await db.$transaction(async (tx) => {
+      await tx.wataKeywordMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      await tx.wataCautionMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      await tx.wataPlatformMapping.deleteMany({
+        where: {
+          wataId: +wataId,
+        },
+      });
+
+      const deleteWata = await tx.wata.delete({
+        where: {
+          id: +wataId,
+        },
+      });
+
+      return deleteWata;
+    });
+
+    return sendSuccessResponse(deleteWata, 200);
+  } catch (error) {
+    console.error("Failed to delete wata:", error);
+    return sendErrorResponse("Failed to delete wata", 500);
+  }
+};

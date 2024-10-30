@@ -23,7 +23,7 @@
     dateStyle: "short",
   });
 
-  let value: DateRange | undefined = {
+  export let value: DateRange | undefined = {
     start: undefined,
     end: undefined,
   };
@@ -53,6 +53,11 @@
       return `약 ${days + 1} 일`;
     }
   }
+
+  $: if (!value) {
+    value = { start: undefined, end: undefined };
+    startValue = undefined;
+  }
 </script>
 
 <div class="grid gap-2">
@@ -67,21 +72,21 @@
         builders={[builder]}
       >
         <CalendarIcon class="mr-2 h-4 w-4" />
-        {#if value && value.start}
-          {#if value.end}
-            {df.format(value.start.toDate(getLocalTimeZone()))} - {df.format(
-              value.end.toDate(getLocalTimeZone())
+        {#if value && value?.start}
+          {#if value?.end}
+            {df.format(value?.start.toDate(getLocalTimeZone()))} - {df.format(
+              value?.end.toDate(getLocalTimeZone())
             )}
 
             ({formatDateRange(
-              value.start.toDate(getLocalTimeZone()),
+              value?.start.toDate(getLocalTimeZone()),
               value.end.toDate(getLocalTimeZone())
             )})
           {:else}
-            {df.format(value.start.toDate(getLocalTimeZone()))}
+            {df.format(value?.start.toDate(getLocalTimeZone()))}
 
             ({formatDateRange(
-              value.start.toDate(getLocalTimeZone()),
+              value?.start.toDate(getLocalTimeZone()),
               undefined
             )})
           {/if}

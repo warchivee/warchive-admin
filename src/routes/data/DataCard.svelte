@@ -4,6 +4,7 @@
   import { Badge } from "$lib/components/ui/badge";
   import DataEditDrawer from "./DataEditDrawer.svelte";
   import { badgeVariants } from "$lib/components/ui/badge";
+  import DataDeleteDialog from "./DataDeleteDialog.svelte";
 
   //utils
   import type { Wata } from "./type";
@@ -115,7 +116,12 @@
       </p>
     </div>
 
-    <DataEditDrawer action="edit" value={data} />
+    <div>
+      <DataEditDrawer action="edit" value={data} />
+      {#if !data.isPublished}
+        <DataDeleteDialog value={data} />
+      {/if}
+    </div>
   </div>
 
   <!-- Main Content -->

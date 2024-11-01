@@ -1,3 +1,5 @@
+//https://authjs.dev/getting-started/session-management/get-session
+
 import type { LayoutServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
 

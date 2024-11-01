@@ -18,9 +18,14 @@ export const { handle, signIn, signOut } = SvelteKitAuth(
         maxAge: DAY * 2,
         updateAge: DAY * 1, //세션 2일 뒤 만료, 1일 내에 활동 시 갱신(갱신시점에서 2일 뒤 만료되는 새 토큰 발급)
       },
+      cookies: {
+        sessionToken: {
+          name: "__Secure-authjs.session-token",
+        },
+      },
       secret: import.meta.env.VITE_AUTH_SECRET,
       trustHost: true,
-      useSecureCookies: false,
+      // useSecureCookies: false,
       pages: {
         signIn: "/signin",
       },

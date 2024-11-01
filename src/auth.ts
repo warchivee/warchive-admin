@@ -3,7 +3,7 @@
 import { SvelteKitAuth, type SvelteKitAuthConfig } from "@auth/sveltekit";
 import CredentialsProvider from "@auth/core/providers/credentials";
 import { db } from "$lib/db";
-import { AUTH_SECRET } from "$env/static/private";
+// import { VITE_AUTH_SECRET } from "$env/static/private";
 
 import type { RequestEvent } from "@sveltejs/kit";
 
@@ -18,7 +18,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth(
         maxAge: DAY * 2,
         updateAge: DAY * 1, //세션 2일 뒤 만료, 1일 내에 활동 시 갱신(갱신시점에서 2일 뒤 만료되는 새 토큰 발급)
       },
-      secret: AUTH_SECRET,
+      secret: import.meta.env.VITE_AUTH_SECRET,
       trustHost: true,
       theme: {
         colorScheme: "dark",

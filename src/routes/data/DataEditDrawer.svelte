@@ -24,7 +24,7 @@
   import { addWata, updateWata } from "$lib/stores/watas.store";
   import ImageCrop from "./ImageCrop.svelte";
   import resizeImage from "$lib/thumbnail/resize";
-  import { PUBLIC_IMGBB_API_KEY } from "$env/static/public";
+  // import { PUBLIC_IMGBB_API_KEY } from "$env/static/public";
 
   //vatiables
   export let action: string = "add";
@@ -54,7 +54,7 @@
     formData.append("image", image);
 
     const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${PUBLIC_IMGBB_API_KEY}&name=${name}`,
+      `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_PUBLIC_IMGBB_API_KEY}&name=${name}`,
       formData,
       {
         headers: {

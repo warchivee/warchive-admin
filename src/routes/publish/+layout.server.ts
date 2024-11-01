@@ -6,6 +6,5 @@ export const load = (async ({ parent }) => {
   const parentData = await parent();
 
   if (!parentData.loggedIn) {
-    throw redirect(303, "auth/signin"); // /auth/signin 으로 하면 에러남
-  }
+    throw redirect(303, "auth/signin");
 }) satisfies LayoutServerLoad;

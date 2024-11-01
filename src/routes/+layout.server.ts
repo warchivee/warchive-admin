@@ -6,7 +6,7 @@ export const load: LayoutServerLoad = async (event) => {
 
   if (!session?.user) {
     if (!session && event.url.pathname !== "/auth/signin") {
-      throw redirect(303, "/auth/signin");
+      throw redirect(303, "auth/signin");
     }
   }
 

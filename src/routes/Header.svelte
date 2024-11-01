@@ -81,14 +81,17 @@
           </div>
         </a>
       </div>
-      <div class="flex items-center">
-        <div class="flex items-center ms-3">
-          <div>
-            <DataSearchDialog />
-            <DataEditDrawer action="add" />
+
+      {#if $page.data?.user}
+        <div class="flex items-center">
+          <div class="flex items-center ms-3">
+            <div>
+              <DataSearchDialog />
+              <DataEditDrawer action="add" />
+            </div>
           </div>
         </div>
-      </div>
+      {/if}
     </div>
   </div>
 </nav>

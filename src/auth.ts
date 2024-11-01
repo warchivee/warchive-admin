@@ -20,6 +20,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth(
       },
       secret: import.meta.env.VITE_AUTH_SECRET,
       trustHost: true,
+      useSecureCookies: false,
       pages: {
         signIn: "/signin",
       },

@@ -3,6 +3,8 @@ import { handle as authenticationHandle } from "./auth";
 import { sequence } from "@sveltejs/kit/hooks";
 
 async function authorizationHandle({ event, resolve }: any) {
+  console.log("deploy error check: authorizationHandle");
+
   if (event.url.pathname.startsWith("/api")) {
     const session = await event.locals.auth();
     if (!session) {

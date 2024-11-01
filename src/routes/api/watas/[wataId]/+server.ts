@@ -75,8 +75,8 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
 
     return sendSuccessResponse(updateWata, 200);
   } catch (error) {
-    console.error("Failed to update category data:", error);
-    return sendErrorResponse("Failed to update category data", 500);
+    console.error("Failed to update data:", error);
+    return sendErrorResponse("Failed to update data", 500);
   }
 };
 

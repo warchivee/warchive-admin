@@ -7,4 +7,5 @@ export const load = (async ({ parent }) => {
 
   if (!parentData.loggedIn) {
     throw redirect(303, "auth/signin");
+  }
 }) satisfies LayoutServerLoad;

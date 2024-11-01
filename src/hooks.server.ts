@@ -1,18 +1,8 @@
-import {
-  redirect,
-  type Handle,
-  type MaybePromise,
-  type RequestEvent,
-} from "@sveltejs/kit";
+import { redirect, type Handle } from "@sveltejs/kit";
 import { handle as authenticationHandle } from "./auth";
 import { sequence } from "@sveltejs/kit/hooks";
 
-interface HandleParams {
-  event: RequestEvent;
-  resolve: (event: RequestEvent) => MaybePromise<Response>;
-}
-
-async function authorizationHandle({ event, resolve }: HandleParams) {
+async function authorizationHandle({ event, resolve }: any) {
   if (event.url.pathname.startsWith("/api")) {
     const session = await event.locals.auth();
     if (!session) {

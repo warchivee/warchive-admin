@@ -7,6 +7,9 @@ const config = {
 
   kit: {
     //https://kit.svelte.dev/docs/adapter-netlify
+    paths: {
+      base: "/",
+    },
     adapter: adapter({
       edge: false,
       split: false,

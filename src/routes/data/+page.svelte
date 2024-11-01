@@ -66,7 +66,7 @@
           .join("&");
       }
 
-      const response = await axiosInstance(`/watas?${queryString}`);
+      const response = await axiosInstance.get(`/watas?${queryString}`);
       const newData = response.data;
 
       totalCount = newData.totalCount;

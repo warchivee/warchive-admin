@@ -8,6 +8,8 @@
   import { onMount } from "svelte";
   import Menu from "./Menu.svelte";
   import DataEditDrawer from "./data/DataEditDrawer.svelte";
+  import DataSearchDialog from "./DataSearchDialog.svelte";
+
   import { page } from "$app/stores";
   let open = false;
   let isMobile = false;
@@ -84,13 +86,7 @@
       <div class="flex items-center">
         <div class="flex items-center ms-3">
           <div>
-            <Button
-              variant="outline"
-              class="w-[180px] text-sm h-[30px]"
-              on:click={handleSearchClick}
-              ><span class="w-full text-left">검색하기...</span></Button
-            >
-
+            <DataSearchDialog />
             <DataEditDrawer action="add" />
           </div>
         </div>

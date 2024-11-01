@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite dev",
     "dev:ssl": "set HTTPS=true&&set SSL_CRT_FILE=./cert.pem&&set SSL_KEY_FILE=./key.pem&&vite dev",
-    "build": "vite build",
+    "build": "pnpm dlx prisma generate && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"

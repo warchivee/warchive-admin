@@ -1,7 +1,7 @@
-// docs: https://authjs.dev/reference/sveltekit
+// docs: https://authjs.dev/getting-started/authentication/credentials#signin-form
 
 import { SvelteKitAuth, type SvelteKitAuthConfig } from "@auth/sveltekit";
-import CredentialsProvider from "@auth/core/providers/credentials";
+import Credentials from "@auth/sveltekit/providers/credentials";
 import { db } from "$lib/db";
 // import { VITE_AUTH_SECRET } from "$env/static/private";
 
@@ -20,22 +20,14 @@ export const { handle, signIn, signOut } = SvelteKitAuth(
       },
       secret: import.meta.env.VITE_AUTH_SECRET,
       trustHost: true,
-      theme: {
-        colorScheme: "dark",
-        logo: "https://www.womynarchive.com/images/logo/logo-text.png",
+      pages: {
+        signIn: "signin",
       },
-      //login 페이지 직접 만들고 싶다면 https://authjs.dev/getting-started/authentication/credentials#signin-form 참고
-      // pages : { signIn: '/login'} 속성 추가
       providers: [
-        CredentialsProvider({
-          name: "Warchive Admin",
+        Credentials({
           credentials: {
-            username: {
-              label: "계정",
-              type: "text",
-              placeholder: "계정을 입력하세요.",
-            },
-            password: { label: "비밀번호", type: "password" },
+            username: {},
+            password: {},
           },
           async authorize(credentials) {
             const user = await db.user.findUnique({
@@ -54,7 +46,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth(
               id: user.id.toString(),
               name: user.nickname,
               redirect: true,
-              callbackUrl: "/",
             };
           },
         }),

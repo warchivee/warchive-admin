@@ -3,12 +3,10 @@ import { handle as authenticationHandle } from "./auth";
 import { sequence } from "@sveltejs/kit/hooks";
 
 async function authorizationHandle({ event, resolve }: any) {
-  console.log("deploy error check: authorizationHandle");
-
   if (event.url.pathname.startsWith("/api")) {
     const session = await event.locals.auth();
-    if (!session) {
-      throw redirect(401, "auth/signin");
+    if (!session && event.url.pathname !== "/auth/signin") {
+      throw redirect(302, "/auth/signin");
     }
   }
 

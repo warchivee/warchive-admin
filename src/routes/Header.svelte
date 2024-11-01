@@ -2,7 +2,6 @@
 
 <script>
   import { buttonVariants } from "$lib/components/ui/button";
-  import Button from "$lib/components/ui/button/button.svelte";
   import * as Dialog from "$lib/components/ui/dialog";
   import logo from "$lib/images/logo.png";
   import { onMount } from "svelte";
@@ -32,10 +31,6 @@
 
   function toggleMenu() {
     open = !open;
-  }
-
-  function handleSearchClick() {
-    console.log("Search button clicked");
   }
 </script>
 

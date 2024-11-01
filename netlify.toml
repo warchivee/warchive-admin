@@ -1,3 +1,4 @@
 [build]
 	command = "pnpm install && pnpm dlx prisma generate && pnpm build"
 	publish = "build"
+	functions = "functions/"

@@ -3,23 +3,21 @@
   import { Label } from "$lib/components/ui/label/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
   import { signIn } from "@auth/sveltekit/client";
+  import { onMount } from "svelte";
 
   let username = "";
   let password = "";
   let loginError = "";
 
-  async function handleSignIn() {
-    try {
-      loginError = "";
-      await signIn("credentials", {
-        username,
-        password,
-        callbackUrl: "/",
-      });
-    } catch (error) {
-      loginError = "Login failed. Please check your username and password.";
+  onMount(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get("error");
+    const code = urlParams.get("code");
+
+    if (error === "CredentialsSignin" && code === "credentials") {
+      loginError = "Invalid username or password. Please try again.";
     }
-  }
+  });
 </script>
 
 <svelte:head>
@@ -46,5 +44,10 @@
     <p class="errorText">{loginError}</p>
   {/if}
 
-  <Button type="submit" on:click={handleSignIn}>로그인하기</Button>
+  <Button
+    type="submit"
+    on:click={() =>
+      signIn("credentials", { username, password, callbackUrl: "/" })}
+    >로그인하기</Button
+  >
 </div>

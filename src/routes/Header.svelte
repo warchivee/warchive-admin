@@ -34,8 +34,6 @@
   }
 </script>
 
-<div>{$page.data?.user?.nickname}</div>
-
 <nav
   class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
 >
@@ -76,6 +74,11 @@
             class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
             >Warchive</span
           >
+          <div
+            class="self-center text-md ml-2 whitespace-nowrap dark:text-white"
+          >
+            {$page.data?.user?.name ?? ""}
+          </div>
         </a>
       </div>
       <div class="flex items-center">

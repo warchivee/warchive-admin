@@ -1,7 +1,3 @@
 [build]
 	command = "pnpm install && pnpm dlx prisma generate && pnpm build"
 	publish = "build"
-[[redirects]]
-    from = "/*"
-    to = "/index.html"
-    status = 200

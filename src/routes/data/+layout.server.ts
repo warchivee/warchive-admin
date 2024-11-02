@@ -1,7 +1,14 @@
 import type { LayoutServerLoad } from "./$types";
 import { db } from "$lib/server/db";
+import { redirect } from "@sveltejs/kit";
 
 export const load = (async ({ parent }) => {
+  const p = await parent();
+
+  if (!p.user) {
+    return redirect(302, "/login");
+  }
+
   try {
     const categories = await db.category.findMany({
       include: {

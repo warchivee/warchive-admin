@@ -3,8 +3,8 @@ import {
   authenticate,
   sendErrorResponse,
   sendSuccessResponse,
-} from "$lib/apiUtils";
-import { db } from "$lib/db";
+} from "$lib/server/apiUtils";
+import { db } from "$lib/server/db";
 
 export const PATCH: RequestHandler = async ({ params, request, locals }) => {
   try {

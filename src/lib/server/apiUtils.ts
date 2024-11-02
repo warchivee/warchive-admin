@@ -1,9 +1,9 @@
 export const authenticate = async (locals: App.Locals) => {
-  const session = await locals.auth();
-  if (!session?.user?.id) {
+  if (!locals.user) {
     throw new Error("Unauthorized access");
   }
-  return session.user.id;
+
+  return locals.user.id;
 };
 
 export const sendErrorResponse = (message: string, status: number) =>

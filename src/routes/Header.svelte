@@ -10,6 +10,7 @@
   import DataSearchDialog from "./DataSearchDialog.svelte";
 
   import { page } from "$app/stores";
+
   let open = false;
   let isMobile = false;
 

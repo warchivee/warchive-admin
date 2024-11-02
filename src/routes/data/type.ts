@@ -21,10 +21,16 @@ export type Wata = PrismaWata & {
   keywords: Keyword[];
   cautions: Keyword[];
   platforms: Platform[];
+  adder?: {
+    id: number;
+    nickname: string;
+  };
   updater?: {
     id: number;
     nickname: string;
   };
+  updatedAt?: Date;
+  createdAt?: Date;
 };
 
 export type ThumbnailCropArea = {

@@ -3,9 +3,9 @@ import {
   authenticate,
   sendSuccessResponse,
   sendErrorResponse,
-} from "$lib/apiUtils";
+} from "$lib/server/apiUtils";
 
-import { db } from "$lib/db";
+import { db } from "$lib/server/db";
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
@@ -77,7 +77,83 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       return newWata;
     });
 
-    return sendSuccessResponse(newWata, 201);
+    const created = await db.wata.findUniqueOrThrow({
+      where: { id: newWata.id },
+      include: {
+        genre: {
+          select: {
+            id: true,
+            name: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        updater: {
+          select: {
+            id: true,
+            nickname: true,
+          },
+        },
+        keywords: {
+          select: {
+            keyword: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        cautions: {
+          select: {
+            caution: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        platforms: {
+          select: {
+            platform: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            url: true,
+          },
+        },
+      },
+    });
+
+    const formattedWata = {
+      ...created,
+      keywords: created.keywords.map((k) => k.keyword),
+      cautions: created.cautions.map((c) => c.caution),
+      platforms: created.platforms.map((p) => ({
+        ...p.platform,
+        url: p.url,
+      })),
+    };
+
+    //id 가 bigint 형이라 아래처럼 처리해줘야 함.
+    return new Response(
+      JSON.stringify(formattedWata, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+      ),
+      {
+        status: 201,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   } catch (error) {
     console.error("Failed to create wata data:", error);
     return sendErrorResponse("Failed to create wata data", 500);
@@ -96,19 +172,44 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   const labelFilter = label ? label.split(",") : [];
 
   const category = url.searchParams.get("categories");
-  const categoryFilter = category ? category.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+  const categoryFilter = category
+    ? category
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+    : [];
 
   const genre = url.searchParams.get("genres");
-  const genreFilter = genre ? genre.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+  const genreFilter = genre
+    ? genre
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+    : [];
 
   const keyword = url.searchParams.get("keywords");
-  const keywordFilter = keyword ? keyword.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+  const keywordFilter = keyword
+    ? keyword
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+    : [];
 
   const caution = url.searchParams.get("cautions");
-  const cautionFilter = caution ? caution.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+  const cautionFilter = caution
+    ? caution
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+    : [];
 
   const platform = url.searchParams.get("platforms");
-  const platformFilter = platform ? platform.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+  const platformFilter = platform
+    ? platform
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+    : [];
 
   const startDateParam = url.searchParams.get("updateStartDate");
   const startDate = startDateParam ? new Date(startDateParam) : undefined;
@@ -116,14 +217,19 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   const endDateParam = url.searchParams.get("updateEndDate");
   const endDate = endDateParam ? new Date(endDateParam) : undefined;
 
-  if ((startDate && isNaN(startDate.getDate())) || (endDate && isNaN(endDate.getDate()))) {
+  if (
+    (startDate && isNaN(startDate.getDate())) ||
+    (endDate && isNaN(endDate.getDate()))
+  ) {
     return new Response("Invalid date format", { status: 400 });
   }
 
   const publishedParam = url.searchParams.get("isPublished") || "";
-  const publishedFilter = publishedParam === "Y" ? true : publishedParam === "N" ? false : undefined;
+  const publishedFilter =
+    publishedParam === "Y" ? true : publishedParam === "N" ? false : undefined;
 
-  const emptyFilter = (url.searchParams.get("needWriteItems") || "").split(",") || [];
+  const emptyFilter =
+    (url.searchParams.get("needWriteItems") || "").split(",") || [];
 
   const whereClause: any = {
     ...(titleFilter && {
@@ -138,58 +244,64 @@ export const GET: RequestHandler = async ({ url, locals }) => {
         mode: "insensitive",
       },
     }),
-    ...(labelFilter && labelFilter.length > 0 && {
-      label: {
-        in: labelFilter,
-      },
-    }),
-    ...(categoryFilter && categoryFilter.length > 0 && {
-      genre: {
-        categoryId: {
-          in: categoryFilter,
+    ...(labelFilter &&
+      labelFilter.length > 0 && {
+        label: {
+          in: labelFilter,
         },
-      },
-    }),
-    ...(genreFilter && genreFilter.length > 0 && {
-      genreId: {
-        in: genreFilter
-      },
-    }),
-    ...(keywordFilter && keywordFilter.length > 0 && {
-      keywords: {
-        some: {
-          keywordId: {
-            in: keywordFilter
+      }),
+    ...(categoryFilter &&
+      categoryFilter.length > 0 && {
+        genre: {
+          categoryId: {
+            in: categoryFilter,
           },
         },
-      },
-    }),
-    ...(cautionFilter && cautionFilter.length > 0 && {
-      cautions: {
-        some: {
-          cautionId: {
-            in: cautionFilter
+      }),
+    ...(genreFilter &&
+      genreFilter.length > 0 && {
+        genreId: {
+          in: genreFilter,
+        },
+      }),
+    ...(keywordFilter &&
+      keywordFilter.length > 0 && {
+        keywords: {
+          some: {
+            keywordId: {
+              in: keywordFilter,
+            },
           },
         },
-      },
-    }),
-    ...(platformFilter && platformFilter.length > 0 && {
-      platforms: {
-        some: {
-          platformId: {
-            in: platformFilter
+      }),
+    ...(cautionFilter &&
+      cautionFilter.length > 0 && {
+        cautions: {
+          some: {
+            cautionId: {
+              in: cautionFilter,
+            },
           },
         },
-      },
-    }),
-    ...(startDate || endDate) && {
+      }),
+    ...(platformFilter &&
+      platformFilter.length > 0 && {
+        platforms: {
+          some: {
+            platformId: {
+              in: platformFilter,
+            },
+          },
+        },
+      }),
+    ...((startDate || endDate) && {
       updatedAt: {
         ...(startDate && { gte: startDate }),
         ...(endDate && { lte: endDate }),
       },
-    },
+    }),
     ...(publishedFilter !== undefined && {
-      isPublished: publishedFilter
+      isPublished: publishedFilter,
     }),
   };
 
@@ -197,7 +309,8 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   if (emptyFilter.includes("title")) emptyConditions.push({ title: null });
   if (emptyFilter.includes("creator")) emptyConditions.push({ creators: null });
   if (emptyFilter.includes("genre")) emptyConditions.push({ genre: null });
-  if (emptyFilter.includes("thumbnail")) emptyConditions.push({ thumbnail: null });
+  if (emptyFilter.includes("thumbnail"))
+    emptyConditions.push({ thumbnail: null });
   if (emptyFilter.includes("keywords")) {
     emptyConditions.push({
       keywords: {

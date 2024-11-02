@@ -3,9 +3,9 @@ import {
   authenticate,
   sendSuccessResponse,
   sendErrorResponse,
-} from "$lib/apiUtils";
+} from "$lib/server/apiUtils";
 
-import { db } from "$lib/db";
+import { db } from "$lib/server/db";
 
 export const PATCH: RequestHandler = async ({ params, request, locals }) => {
   try {
@@ -73,7 +73,83 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
       return updateWata;
     });
 
-    return sendSuccessResponse(updateWata, 200);
+    const updated = await db.wata.findUniqueOrThrow({
+      where: { id: updateWata.id },
+      include: {
+        genre: {
+          select: {
+            id: true,
+            name: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        updater: {
+          select: {
+            id: true,
+            nickname: true,
+          },
+        },
+        keywords: {
+          select: {
+            keyword: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        cautions: {
+          select: {
+            caution: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        platforms: {
+          select: {
+            platform: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            url: true,
+          },
+        },
+      },
+    });
+
+    const formattedWata = {
+      ...updated,
+      keywords: updated.keywords.map((k) => k.keyword),
+      cautions: updated.cautions.map((c) => c.caution),
+      platforms: updated.platforms.map((p) => ({
+        ...p.platform,
+        url: p.url,
+      })),
+    };
+
+    //id 가 bigint 형이라 아래처럼 처리해줘야 함.
+    return new Response(
+      JSON.stringify(formattedWata, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   } catch (error) {
     console.error("Failed to update data:", error);
     return sendErrorResponse("Failed to update data", 500);

@@ -1,19 +1,12 @@
-//https://authjs.dev/getting-started/session-management/get-session
-
 import type { LayoutServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
 
 export const load: LayoutServerLoad = async (event) => {
-  const session = await event.locals.auth();
-
-  if (!session?.user && event.url.pathname !== "/signin") {
-    throw redirect(303, "signin");
+  if (!event.locals.user) {
+    return redirect(302, "/login");
   }
 
-  const loggedIn = !!session?.user;
-
   return {
-    loggedIn: loggedIn,
-    user: session?.user,
+    user: event.locals.user,
   };
 };

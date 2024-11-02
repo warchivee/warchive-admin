@@ -45,7 +45,19 @@ model User {
   addedWataPlatforms   WataPlatformMapping[] @relation("WataPlatformAdder")
   updatedWataPlatforms WataPlatformMapping[] @relation("WataPlatformUpdater")
 
+  sessions Session[] @relation("SessionToUser")
+
   @@map("user")
+}
+
+model Session {
+  id        String   @id
+  userId    String   @map("user_id") // userId 대신 account 필드 사용
+  expiresAt DateTime @map("expires_at")
+
+  user      User    @relation("SessionToUser", fields: [userId], references: [account], onDelete: Cascade)
+
+  @@map("session")
 }
 
 model Keyword {

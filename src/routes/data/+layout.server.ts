@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
-import { db } from "$lib/db";
+import { db } from "$lib/server/db";
 
 export const load = (async ({ parent }) => {
   try {

@@ -1,20 +1,37 @@
-import { redirect, type Handle } from "@sveltejs/kit";
-import { handle as authenticationHandle } from "./auth";
-import { sequence } from "@sveltejs/kit/hooks";
+import { lucia } from "$lib/server/auth";
 
-async function authorizationHandle({ event, resolve }: any) {
-  if (event.url.pathname.startsWith("/api")) {
-    const session = await event.locals.auth();
+import type { Handle } from "@sveltejs/kit";
 
-    if (!session) {
-      throw redirect(302, "signin");
-    }
+export const handle: Handle = async ({ event, resolve }) => {
+  const sessionId = event.cookies.get(lucia.sessionCookieName);
+
+  if (!sessionId) {
+    event.locals.user = null;
+    event.locals.session = null;
+
+    return resolve(event);
   }
 
-  return resolve(event);
-}
+  const { session, user } = await lucia.validateSession(sessionId);
 
-export const handle: Handle = sequence(
-  authenticationHandle,
-  authorizationHandle
-);
+  if (session && session.fresh) {
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    event.cookies.set(sessionCookie.name, sessionCookie.value, {
+      path: ".",
+      ...sessionCookie.attributes,
+    });
+  }
+
+  if (!session) {
+    const sessionCookie = lucia.createBlankSessionCookie();
+    event.cookies.set(sessionCookie.name, sessionCookie.value, {
+      path: ".",
+      ...sessionCookie.attributes,
+    });
+  }
+
+  event.locals.user = user;
+  event.locals.session = session;
+
+  return resolve(event);
+};

@@ -140,15 +140,18 @@
       };
 
       if (action === "add") {
-        await axiosInstance.post(`/watas`, requestBody);
+        const response = await axiosInstance.post(`/watas`, requestBody);
 
-        addWata(requestBody as Wata);
+        addWata(response.data as Wata);
 
         toast.success(`${formData.title} 를 추가했습니다.`);
       } else {
-        await axiosInstance.patch(`/watas/${value.id}`, requestBody);
+        const response = await axiosInstance.patch(
+          `/watas/${value.id}`,
+          requestBody
+        );
 
-        updateWata(requestBody as Wata);
+        updateWata(response.data as Wata);
 
         toast.success(`${formData.title} 를 수정했습니다.`);
       }

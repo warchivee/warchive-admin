@@ -8,10 +8,9 @@
   //icons
   import { XIcon } from "lucide-svelte";
   import Plus from "lucide-svelte/icons/plus";
-  import type { Platform } from "./type";
+  import type { Platform } from "../type";
 
-  //utils
-
+  //variables
   export let allPlatforms: Platform[];
   export let values: Platform[];
   export let onChange: (values: Platform[]) => void;

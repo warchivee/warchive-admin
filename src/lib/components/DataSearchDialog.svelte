@@ -3,14 +3,14 @@
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-  import DataCard from "./data/DataCard.svelte";
+  import DataCard from "./DataCard.svelte";
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 
   //utils
   import { cn } from "$lib/utils.js";
   import { toast } from "svelte-sonner";
   import axiosInstance from "$lib/axios";
-  import type { Wata } from "./data/type";
+  import type { Wata } from "../../routes/data/type";
 
   //variables
   let open = false;

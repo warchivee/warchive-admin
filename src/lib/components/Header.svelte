@@ -1,14 +1,20 @@
 <!-- https://flowbite.com/docs/components/sidebar/ -->
 
 <script>
-  import { buttonVariants } from "$lib/components/ui/button";
+  //components
   import * as Dialog from "$lib/components/ui/dialog";
-  import logo from "$lib/images/logo.png";
-  import { onMount } from "svelte";
   import Menu from "./Menu.svelte";
-  import DataEditDrawer from "./data/DataEditDrawer.svelte";
+
+  //assets
+  import logo from "$lib/images/logo.png";
+
+  //dialogs
+  import DataEditDrawer from "$lib/components/DataEditDrawer.svelte";
   import DataSearchDialog from "./DataSearchDialog.svelte";
 
+  //utils
+  import { buttonVariants } from "$lib/components/ui/button";
+  import { onMount } from "svelte";
   import { page } from "$app/stores";
 
   let open = false;

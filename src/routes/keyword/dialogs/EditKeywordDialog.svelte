@@ -7,52 +7,52 @@
   import { Textarea } from "$lib/components/ui/textarea/index.js";
 
   //icons
-  import Plus from "lucide-svelte/icons/plus";
-  import { toast } from "svelte-sonner";
+  import Pencil from "lucide-svelte/icons/pencil";
 
   //utils
-  import { cn } from "$lib/utils";
+  import { toast } from "svelte-sonner";
   import axiosInstance from "$lib/axios";
-  import { addKeyword } from "$lib/stores/keywords.store";
-  import { addCaution } from "$lib/stores/cautions.store";
+  import { updateKeyword } from "$lib/stores/keywords.store";
+  import { updateCaution } from "$lib/stores/cautions.store";
 
   //variables
+  export let value: { id: number; name: string; description: string | null };
   export let type: string = "keywords";
 
   const dialogLabel = type === "cautions" ? "주의 키워드" : "키워드";
 
   let open = false;
-  let name = "";
-  let description = "";
+  let name = value.name;
+  let description = value.description;
 
   //functions
   function handleClose() {
     open = false;
-    name = "";
-    description = "";
   }
 
   async function handleSubmit() {
     const trimName = name.trim();
 
     if (!trimName) {
-      toast.error("키워드명을 입력해주세요.");
+      toast.error(`수정할 ${dialogLabel}명을 입력해주세요.`);
       return;
     }
 
     try {
-      const response = await axiosInstance.post(`/${type}`, {
+      const response = await axiosInstance.patch(`/${type}/${value.id}`, {
         name,
         description,
       });
 
-      if (type === "keywords") {
-        addKeyword(response.data);
-      } else {
-        addCaution(response.data);
-      }
+      toast.success(
+        `'${value.name}' ${dialogLabel}를 '${trimName}' 으로 수정했습니다.`
+      );
 
-      toast.success(`'${trimName}' ${dialogLabel}를 추가했습니다.`);
+      if (type === "keywords") {
+        updateKeyword(response.data);
+      } else {
+        updateCaution(response.data);
+      }
 
       handleClose();
     } catch (error) {
@@ -63,24 +63,18 @@
 </script>
 
 <Dialog.Root bind:open>
-  <Dialog.Trigger
-    class={cn(
-      "flex gap-1 items-center w-fit",
-      buttonVariants({ variant: "ghost" })
-    )}
-  >
-    <Plus class="h-5 w-5 text-slate-400" />
-    <div class="underline underline-offset-2">새 {dialogLabel} 추가</div>
+  <Dialog.Trigger class={buttonVariants({ variant: "ghost" })}>
+    <Pencil class="h-4 w-4 text-slate-400" />
   </Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px] space-y-2">
     <Dialog.Header>
-      <Dialog.Title>새 {dialogLabel} 추가</Dialog.Title>
+      <Dialog.Title>'{value.name}' {dialogLabel} 수정</Dialog.Title>
     </Dialog.Header>
     <div class="grid w-full max-w-sm items-center gap-1.5">
       <Label for="name">{dialogLabel}명</Label>
       <Input
         id="name"
-        placeholder="{dialogLabel}명을 입력해주세요..."
+        placeholder="수정할 {dialogLabel}명을 입력해주세요..."
         autocomplete="off"
         bind:value={name}
       />
@@ -95,7 +89,7 @@
       />
     </div>
     <Dialog.Footer>
-      <Button type="submit" on:click={handleSubmit}>추가하기</Button>
+      <Button type="submit" on:click={handleSubmit}>수정하기</Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

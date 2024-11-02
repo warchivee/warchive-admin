@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { categories } from "$lib/stores/categories.store";
-  import { keywords } from "$lib/stores/keywords.store";
-  import { cautions } from "$lib/stores/cautions.store";
-  import type { LayoutData } from "./$types";
+  //utils
   import type {
     Keyword,
     Caution,
@@ -10,7 +7,12 @@
     Platform,
     Genre,
   } from "@prisma/client";
+  import { categories } from "$lib/stores/categories.store";
+  import { keywords } from "$lib/stores/keywords.store";
+  import { cautions } from "$lib/stores/cautions.store";
+  import type { LayoutData } from "./$types";
 
+  //variables
   export let data: LayoutData;
 
   categories.set(

@@ -7,7 +7,7 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
   import Button from "$lib/components/ui/button/button.svelte";
   import KeywordSelect from "./KeywordSelect.svelte";
-  import PlatformInput from "./PlatformInput.svelte";
+  import PlatformInput from "../../routes/data/components/PlatformInput.svelte";
   import { Label } from "$lib/components/ui/label/index.js";
   import { Switch } from "$lib/components/ui/switch/index.js";
 
@@ -15,16 +15,15 @@
   import cloneDeep from "lodash/cloneDeep";
   import axios, { AxiosError } from "axios";
   import { toast } from "svelte-sonner";
-  import type { Wata } from "./type";
   import { categories } from "$lib/stores/categories.store";
   import { keywords } from "$lib/stores/keywords.store";
   import { cautions } from "$lib/stores/cautions.store";
   import { cn } from "$lib/utils";
   import axiosInstance from "$lib/axios";
   import { addWata, updateWata } from "$lib/stores/watas.store";
-  import ImageCrop from "./ImageCrop.svelte";
+  import ImageCrop from "../../routes/data/components/ImageCrop.svelte";
   import resizeImage from "$lib/thumbnail/resize";
-  // import { PUBLIC_IMGBB_API_KEY } from "$env/static/public";
+  import type { Wata } from "../../routes/data/type";
 
   //vatiables
   export let action: string = "add";

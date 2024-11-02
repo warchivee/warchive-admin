@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-
-  import { Input } from "$lib/components/ui/input/index.js";
+  //components
   import { Label } from "$lib/components/ui/label/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
 
+  //utils
+  import { enhance } from "$app/forms";
   import type { ActionData } from "./$types";
 
+  //variables
   export let form: ActionData;
 </script>
 

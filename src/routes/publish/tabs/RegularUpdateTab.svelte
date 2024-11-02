@@ -4,7 +4,7 @@
   import * as Alert from "$lib/components/ui/alert";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import { Button } from "$lib/components/ui/button/index.js";
-  import Result from "./Result.svelte";
+  import Result from "../components/Result.svelte";
 
   //icons
   import Terminal from "lucide-svelte/icons/terminal";

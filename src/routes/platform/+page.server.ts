@@ -1,5 +1,5 @@
-import { type Category, type Platform } from "@prisma/client";
 import { db } from "$lib/server/db";
+import { type Category, type Platform } from "@prisma/client";
 
 type LoadData = {
   categories: (Category & { platforms: Platform[] })[];

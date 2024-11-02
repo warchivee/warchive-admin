@@ -1,4 +1,6 @@
 [build]
-	command = "pnpm install && svelte-kit sync && pnpm dlx prisma generate && pnpm build"
+	command = "svelte-kit sync && pnpm dlx prisma generate && pnpm build"
 	publish = "build"
-	functions = "functions/"
+	
+[functions]
+	directory = "functions"

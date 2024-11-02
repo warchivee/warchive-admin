@@ -5,10 +5,12 @@
 
   //icons
   import Trash from "lucide-svelte/icons/trash-2";
-  import { toast } from "svelte-sonner";
+
+  //utils
   import axiosInstance from "$lib/axios";
   import { deleteKeyword } from "$lib/stores/keywords.store";
   import { deleteCaution } from "$lib/stores/cautions.store";
+  import { toast } from "svelte-sonner";
 
   //variables
   export let value: { id: number; name: string };

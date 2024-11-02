@@ -5,18 +5,18 @@
   import * as Alert from "$lib/components/ui/alert";
 
   //dialogs
-  import AddKeywordDialog from "./AddKeywordDialog.svelte";
-  import EditKeywordDialog from "./EditKeywordDialog.svelte";
-  import DeleteKeywordDialog from "./DeleteKeywordDialog.svelte";
-  import MergeKeywordDialog from "./MergeEeywordDialog.svelte";
+  import AddKeywordDialog from "./dialogs/AddKeywordDialog.svelte";
+  import EditKeywordDialog from "./dialogs/EditKeywordDialog.svelte";
+  import DeleteKeywordDialog from "./dialogs/DeleteKeywordDialog.svelte";
+  import MergeKeywordDialog from "./dialogs/MergeEeywordDialog.svelte";
 
   //icons
   import Terminal from "lucide-svelte/icons/terminal";
 
   //utils
-  import type { PageData } from "./$types.js";
   import { keywords } from "$lib/stores/keywords.store";
   import { cautions } from "$lib/stores/cautions.store";
+  import type { PageData } from "./$types.js";
 
   //variables
   export let data: PageData;

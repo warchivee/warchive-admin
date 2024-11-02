@@ -7,7 +7,7 @@
   import { toast } from "svelte-sonner";
   import { cn } from "$lib/utils";
   import axiosInstance from "$lib/axios";
-  import type { Wata } from "./type";
+  import type { Wata } from "../type";
   import { deleteWata } from "$lib/stores/watas.store";
 
   //variables

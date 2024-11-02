@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { Button, buttonVariants } from "$lib/components/ui/button";
-  import * as Dialog from "$lib/components/ui/dialog/index.js";
-  import { cn } from "$lib/utils";
   //components
+  import { Button } from "$lib/components/ui/button";
+  import * as Dialog from "$lib/components/ui/dialog/index.js";
 
   //utils
   import Cropper from "svelte-easy-crop";
-  import type { ThumbnailCropArea } from "./type";
   import getCroppedImg from "$lib/thumbnail/crop";
+  import type { ThumbnailCropArea } from "../type";
 
   //variables
   export let image: string | null;

@@ -1,5 +1,6 @@
-import { type Keyword, type Caution } from "@prisma/client";
 import { db } from "$lib/server/db";
+
+import { type Keyword, type Caution } from "@prisma/client";
 
 type LoadData = {
   keywords: Keyword[];

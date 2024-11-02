@@ -4,11 +4,11 @@
   import { Badge } from "$lib/components/ui/badge";
   import DataEditDrawer from "./DataEditDrawer.svelte";
   import { badgeVariants } from "$lib/components/ui/badge";
-  import DataDeleteDialog from "./DataDeleteDialog.svelte";
+  import DataDeleteDialog from "../../routes/data/dialogs/DataDeleteDialog.svelte";
 
   //utils
-  import type { Wata } from "./type";
-  import DataLabelEditDialog from "./DataLabelEditDialog.svelte";
+  import type { Wata } from "../../routes/data/type";
+  import DataLabelEditDialog from "../../routes/data/dialogs/DataLabelEditDialog.svelte";
   import axiosInstance from "$lib/axios";
   import { toast } from "svelte-sonner";
 
@@ -32,10 +32,10 @@
   };
 
   export let data: Wata;
+
   let open = false;
   let openSelect = false;
   let editLabel = data.label;
-  let tempLabel = data.label;
 
   async function handleLabel(label: string) {
     open = false; // open 이 계속 true 인 경우 상태 변화 트리거 안 되어서 한번 false 로 설정...

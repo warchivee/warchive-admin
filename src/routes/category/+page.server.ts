@@ -1,5 +1,6 @@
-import { type Category, type Genre } from "@prisma/client";
 import { db } from "$lib/server/db";
+
+import { type Category, type Genre } from "@prisma/client";
 
 type LoadData = {
   categories: (Category & { genres: Genre[] })[];

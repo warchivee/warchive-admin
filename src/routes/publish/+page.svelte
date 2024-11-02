@@ -1,8 +1,8 @@
 <script lang="ts">
   //components
   import * as Tabs from "$lib/components/ui/tabs";
-  import IrregularUpdateTab from "./IrregularUpdateTab.svelte";
-  import RegularUpdateTab from "./RegularUpdateTab.svelte";
+  import IrregularUpdateTab from "./tabs/IrregularUpdateTab.svelte";
+  import RegularUpdateTab from "./tabs/RegularUpdateTab.svelte";
 </script>
 
 <svelte:head>

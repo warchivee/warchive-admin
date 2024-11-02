@@ -6,18 +6,18 @@
   import RightArrow from "lucide-svelte/icons/chevron-right";
 
   //dialogs
-  import AddCategoryDialog from "./AddCategoryDialog.svelte";
-  import AddGenreDialog from "./AddGenreDialog.svelte";
-  import EditCategoryDialog from "./EditCategoryDialog.svelte";
-  import EditGenreDialog from "./EditGenreDialog.svelte";
+  import AddCategoryDialog from "./dialogs/AddCategoryDialog.svelte";
+  import AddGenreDialog from "./dialogs/AddGenreDialog.svelte";
+  import EditCategoryDialog from "./dialogs/EditCategoryDialog.svelte";
+  import EditGenreDialog from "./dialogs/EditGenreDialog.svelte";
 
   //icons
   import Terminal from "lucide-svelte/icons/terminal";
 
   //utils
-  import type { PageData } from "./$types.js";
   import { categories } from "$lib/stores/categories.store";
   import type { Category, Genre, Platform } from "@prisma/client";
+  import type { PageData } from "./$types.js";
 
   //variables
   export let data: PageData;

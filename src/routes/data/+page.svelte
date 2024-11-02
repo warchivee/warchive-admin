@@ -3,8 +3,8 @@
   import * as Pagination from "$lib/components/ui/pagination";
   import Button from "$lib/components/ui/button/button.svelte";
   import Input from "$lib/components/ui/input/input.svelte";
-  import DataCard from "./DataCard.svelte";
-  import DataFilterForm from "./DataFilterForm.svelte";
+  import DataCard from "$lib/components/DataCard.svelte";
+  import DataFilterForm from "./components/DataFilterForm.svelte";
 
   //utils
   import { onMount } from "svelte";
@@ -16,7 +16,6 @@
   let pageSize = 10;
   let currentPage = 1;
   let searchConditions: Record<string, any> = {};
-
   let totalCount = 0;
 
   $: pageSize, fetchData(); // perPage 변경 시 fetchData 실행

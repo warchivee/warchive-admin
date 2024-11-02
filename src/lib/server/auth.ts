@@ -1,14 +1,12 @@
 import { Lucia } from "lucia";
 import { dev } from "$app/environment";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { PrismaClient } from "@prisma/client";
-import { db } from "./db";
+import { db } from "$lib/server/db";
 
 export const lucia = new Lucia(new PrismaAdapter(db.session, db.user), {
   sessionCookie: {
     attributes: {
       secure: !dev,
-      sameSite: "none",
     },
   },
   getUserAttributes: (attributes) => {

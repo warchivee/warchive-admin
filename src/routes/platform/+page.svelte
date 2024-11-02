@@ -6,9 +6,9 @@
   import { Badge } from "$lib/components/ui/badge/index.js";
 
   //dislogs
-  import AddPlatformDialog from "./AddPlatformDialog.svelte";
-  import EditPlatformDialog from "./EditPlatformDialog.svelte";
-  import DeletePlatformDialog from "./DeletePlatformDialog.svelte";
+  import AddPlatformDialog from "./dialogs/AddPlatformDialog.svelte";
+  import EditPlatformDialog from "./dialogs/EditPlatformDialog.svelte";
+  import DeletePlatformDialog from "./dialogs/DeletePlatformDialog.svelte";
 
   //icons
   import Terminal from "lucide-svelte/icons/terminal";

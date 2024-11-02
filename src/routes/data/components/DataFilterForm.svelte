@@ -1,12 +1,12 @@
 <script lang="ts">
+  //components
   import Button from "$lib/components/ui/button/button.svelte";
   import * as Drawer from "$lib/components/ui/drawer";
-
-  //utils
-  import FilterIcon from "lucide-svelte/icons/filter";
-
   import { Label } from "$lib/components/ui/label";
   import RangeDatePicker from "$lib/components/datepicker/range-date-picker.svelte";
+
+  //icons
+  import FilterIcon from "lucide-svelte/icons/filter";
 
   export let handleSubmit = (searchConditions: Record<string, any>) => {};
   let open = false;

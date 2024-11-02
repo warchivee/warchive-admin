@@ -1,7 +1,9 @@
 <script lang="ts">
+  //styles
   import "../app.css";
 
-  import Header from "./Header.svelte";
+  //components
+  import Header from "$lib/components/Header.svelte";
   import { Toaster } from "$lib/components/ui/sonner";
 </script>
 

@@ -1,12 +1,7 @@
 import type { LayoutServerLoad } from "./$types";
 import { db } from "$lib/server/db";
-import { redirect } from "@sveltejs/kit";
 
-export const load = (async (event) => {
-  if (!event.locals.user) {
-    return redirect(302, "/login");
-  }
-
+export const load = (async () => {
   try {
     const categories = await db.category.findMany({
       include: {

@@ -13,6 +13,7 @@ const DAY = HOUR * 24;
 export const { handle, signIn, signOut } = SvelteKitAuth(
   async (event: RequestEvent) => {
     const authOptions: SvelteKitAuthConfig = {
+      basePath: "/api/auth",
       session: {
         strategy: "jwt",
         maxAge: DAY * 2,

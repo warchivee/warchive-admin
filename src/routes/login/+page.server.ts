@@ -24,13 +24,13 @@ export const actions: Actions = {
     });
 
     if (!user || !user?.account) {
-      return fail(400, { message: "Incorrect account" });
+      return fail(400, { message: "계정이 없습니다." });
     }
 
     const validPassword = password === user.password;
 
     if (!validPassword) {
-      return fail(400, { message: "Incorrect password" });
+      return fail(400, { message: "비밀번호가 일치하지 않습니다." });
     }
 
     const session = await lucia.createSession(user.account, {});

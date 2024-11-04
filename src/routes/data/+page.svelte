@@ -245,15 +245,15 @@
           >
         </div>
       </div>
+
+      <DataFilterForm
+        handleSubmit={async (formData) => {
+          serachDataInput = "";
+          searchConditions = formData;
+
+          await refreshData();
+        }}
+      />
     {/if}
   </article>
 </section>
-
-<DataFilterForm
-  handleSubmit={async (formData) => {
-    serachDataInput = "";
-    searchConditions = formData;
-
-    await refreshData();
-  }}
-/>

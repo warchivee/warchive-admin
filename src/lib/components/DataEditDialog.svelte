@@ -2,7 +2,6 @@
   //components
   import * as Sheet from "$lib/components/ui/sheet";
   import * as Select from "$lib/components/ui/select/index.js";
-  import * as Drawer from "$lib/components/ui/drawer";
   import { Textarea } from "$lib/components/ui/textarea/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";

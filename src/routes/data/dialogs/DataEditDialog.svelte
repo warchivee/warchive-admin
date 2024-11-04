@@ -11,7 +11,7 @@
   import { Label } from "$lib/components/ui/label/index.js";
   import { Switch } from "$lib/components/ui/switch/index.js";
 
-  //icons loader-circle
+  //icons
   import ReloadIcon from "lucide-svelte/icons/loader-circle";
 
   //utils

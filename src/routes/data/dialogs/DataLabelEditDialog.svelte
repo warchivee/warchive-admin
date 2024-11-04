@@ -5,6 +5,9 @@
   import { Label } from "$lib/components/ui/label/index.js";
   import { Textarea } from "$lib/components/ui/textarea/index.js";
 
+  //icons
+  import ReloadIcon from "lucide-svelte/icons/loader-circle";
+
   //utils
   import type { Wata } from "@prisma/client";
 
@@ -26,10 +29,16 @@
     note: string | null;
   }) => void;
 
+  let loading = false;
   let note = data.note;
+
+  function handleConfirm() {
+    loading = true;
+    handleSubmit({ label: editLabel, note: note });
+  }
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root closeOnOutsideClick={!loading} bind:open>
   <Dialog.Content class="sm:max-w-[425px] space-y-2">
     <Dialog.Header>
       <Dialog.Title>{LABELS[editLabel]}</Dialog.Title>
@@ -42,11 +51,12 @@
       <Textarea id="note" bind:value={note} />
     </div>
     <Dialog.Footer>
-      <Button
-        on:click={() => {
-          handleSubmit({ label: editLabel, note: note });
-        }}>확인</Button
-      >
+      <Button disabled={loading} on:click={handleConfirm}>
+        {#if loading}
+          <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
+        {/if}
+        확인
+      </Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>

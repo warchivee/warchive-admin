@@ -3,6 +3,9 @@
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
 
+  //icons
+  import ReloadIcon from "lucide-svelte/icons/loader-circle";
+
   //utils
   import { toast } from "svelte-sonner";
   import { cn } from "$lib/utils";
@@ -15,6 +18,7 @@
     title: "",
   } as Wata;
 
+  let loading = false;
   let open = false;
 
   //functions
@@ -23,6 +27,8 @@
   }
 
   async function handleSubmit() {
+    loading = true;
+
     try {
       await axiosInstance.delete(`/watas/${value.id}`);
 
@@ -34,11 +40,13 @@
     } catch (error) {
       console.error(error);
       toast.error("sorry, this functions is failed");
+    } finally {
+      loading = false;
     }
   }
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root closeOnOutsideClick={!loading} bind:open>
   <Dialog.Trigger
     class={cn("text-sm h-[30px]", buttonVariants({ variant: "ghost" }))}
   >
@@ -52,7 +60,15 @@
       </Dialog.Description>
     </Dialog.Header>
     <Dialog.Footer>
-      <Button variant="destructive" type="submit" on:click={handleSubmit}>
+      <Button
+        variant="destructive"
+        type="submit"
+        disabled={loading}
+        on:click={handleSubmit}
+      >
+        {#if loading}
+          <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
+        {/if}
         삭제하기
       </Button>
     </Dialog.Footer>

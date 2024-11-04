@@ -107,6 +107,8 @@
         </Select.Content>
       </Select.Root>
 
+      <DataLabelEditDialog {data} {editLabel} {open} {handleSubmit} />
+
       <p class="text-gray-600 text-xs">
         <b>Last updated</b>
         <br />
@@ -215,5 +217,3 @@
     {/if}
   </div>
 </div>
-
-<DataLabelEditDialog {data} {editLabel} {open} {handleSubmit} />

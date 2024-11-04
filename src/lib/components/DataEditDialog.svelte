@@ -185,7 +185,7 @@
     : { label: "", value: -1 };
 </script>
 
-<Sheet.Root bind:open>
+<Sheet.Root closeOnOutsideClick={!loading} bind:open>
   <Sheet.Trigger
     let:builder
     class={action === "add" ? "fixed bottom-6 right-6" : ""}

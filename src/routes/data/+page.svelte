@@ -173,16 +173,18 @@
       }}
     />
 
-    <div class="absolute inset-y-0 end-0 flex items-center pr-3">
-      <DataFilterForm
-        handleSubmit={async (formData) => {
-          serachDataInput = "";
-          searchConditions = formData;
+    {#if !loading}
+      <div class="absolute inset-y-0 end-0 flex items-center pr-3">
+        <DataFilterForm
+          handleSubmit={async (formData) => {
+            serachDataInput = "";
+            searchConditions = formData;
 
-          await refreshData();
-        }}
-      />
-    </div>
+            await refreshData();
+          }}
+        />
+      </div>
+    {/if}
   </div>
 </div>
 

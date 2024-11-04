@@ -1,9 +1,9 @@
 <script lang="ts">
   //components
   import Button from "$lib/components/ui/button/button.svelte";
-  import * as Drawer from "$lib/components/ui/drawer";
   import { Label } from "$lib/components/ui/label";
   import RangeDatePicker from "$lib/components/datepicker/range-date-picker.svelte";
+  import * as Popover from "$lib/components/ui/popover/index.js";
 
   //icons
   import FilterIcon from "lucide-svelte/icons/filter";
@@ -124,107 +124,79 @@
   }
 </script>
 
-<Drawer.Root shouldScaleBackground={false} bind:open>
-  <Drawer.Trigger let:builder>
-    <div class="fixed end-6 bottom-6">
-      <Button builders={[builder]} class="w-14 h-14 rounded-full shadow-lg">
-        <FilterIcon />
-      </Button>
-    </div></Drawer.Trigger
-  >
-  <Drawer.Content>
-    <Drawer.Header class="flex flex-row justify-between">
-      <Drawer.Title>데이터 검색</Drawer.Title>
-      <Drawer.Close
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width={1.5}
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
-        </svg>
-      </Drawer.Close>
-    </Drawer.Header>
-
-    <div class="p-8">
-      <div class="space-y-3">
-        {#each Object.keys(filterValues) as filterKey}
-          <div class="space-y-2">
-            <div class="flex gap-2">
-              <h6 class="font-bold text-sm">{filterValues[filterKey].name}</h6>
-              <Button
-                variant="ghost"
-                class="text-gray-400 h-[20px] w-[40px] text-xs"
-                on:click={() => {
-                  resetItems(filterKey);
-                }}>초기화</Button
-              >
-            </div>
-            <ul
-              class="grid grid-cols-3 items-center w-full bg-white rounded-md overflow-hidden"
-            >
-              {#each filterValues[filterKey].values as value}
-                {@const checked = formData[filterKey].includes(value.id)}
-                <li
-                  class="w-full {checked
-                    ? 'bg-gray-200'
-                    : ''} hover:bg-gray-300"
-                >
-                  <Label
-                    class="text-[13px] cursor-pointer flex w-full p-2 truncate"
-                    for={`${filterKey}-${value.id}`}>{value.name}</Label
-                  >
-                  <input
-                    hidden
-                    type="checkbox"
-                    id={`${filterKey}-${value.id}`}
-                    name={filterKey}
-                    value={value.id}
-                    on:change={(e) => {
-                      if (!(e.target instanceof HTMLInputElement)) {
-                        return;
-                      }
-
-                      if (e.target.checked) {
-                        addItem(filterKey, value.id);
-                      } else {
-                        removeItem(filterKey, value.id);
-                      }
-                    }}
-                    {checked}
-                  />
-                </li>
-              {/each}
-            </ul>
-          </div>
-
-          <hr />
-        {/each}
-
+<Popover.Root bind:open>
+  <Popover.Trigger>
+    <FilterIcon class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+  </Popover.Trigger>
+  <Popover.Content>
+    <div class="space-y-3">
+      {#each Object.keys(filterValues) as filterKey}
         <div class="space-y-2">
           <div class="flex gap-2">
-            <h6 class="font-bold text-sm">마지막 수정일</h6>
+            <h6 class="font-bold text-sm">{filterValues[filterKey].name}</h6>
             <Button
               variant="ghost"
               class="text-gray-400 h-[20px] w-[40px] text-xs"
               on:click={() => {
-                formData.updateDate = null;
+                resetItems(filterKey);
               }}>초기화</Button
             >
           </div>
-          <RangeDatePicker bind:value={formData.updateDate} />
+          <ul
+            class="grid grid-cols-3 items-center w-full bg-white rounded-md overflow-hidden"
+          >
+            {#each filterValues[filterKey].values as value}
+              {@const checked = formData[filterKey].includes(value.id)}
+              <li
+                class="w-full {checked ? 'bg-gray-200' : ''} hover:bg-gray-300"
+              >
+                <Label
+                  class="text-[13px] cursor-pointer flex w-full p-2 truncate"
+                  for={`${filterKey}-${value.id}`}>{value.name}</Label
+                >
+                <input
+                  hidden
+                  type="checkbox"
+                  id={`${filterKey}-${value.id}`}
+                  name={filterKey}
+                  value={value.id}
+                  on:change={(e) => {
+                    if (!(e.target instanceof HTMLInputElement)) {
+                      return;
+                    }
+
+                    if (e.target.checked) {
+                      addItem(filterKey, value.id);
+                    } else {
+                      removeItem(filterKey, value.id);
+                    }
+                  }}
+                  {checked}
+                />
+              </li>
+            {/each}
+          </ul>
         </div>
+
+        <hr />
+      {/each}
+
+      <div class="space-y-2">
+        <div class="flex gap-2">
+          <h6 class="font-bold text-sm">마지막 수정일</h6>
+          <Button
+            variant="ghost"
+            class="text-gray-400 h-[20px] w-[40px] text-xs"
+            on:click={() => {
+              formData.updateDate = null;
+            }}>초기화</Button
+          >
+        </div>
+        <RangeDatePicker bind:value={formData.updateDate} />
       </div>
     </div>
 
-    <Drawer.Footer class="flex flex-row-reverse">
+    <div class="mt-4">
       <Button
         class="w-[120px]"
         on:click={() => {
@@ -239,6 +211,6 @@
           resetAllItems();
         }}>전체 초기화</Button
       >
-    </Drawer.Footer>
-  </Drawer.Content>
-</Drawer.Root>
+    </div>
+  </Popover.Content>
+</Popover.Root>

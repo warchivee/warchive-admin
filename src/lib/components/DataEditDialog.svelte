@@ -186,9 +186,15 @@
 </script>
 
 <Sheet.Root bind:open>
-  <Sheet.Trigger let:builder>
-    <Button builders={[builder]} class="text-sm h-[30px]"
-      >{action === "add" ? "데이터 추가" : "수정"}</Button
+  <Sheet.Trigger
+    let:builder
+    class={action === "add" ? "fixed bottom-6 right-6" : ""}
+  >
+    <Button
+      builders={[builder]}
+      class={action === "add"
+        ? "rounded-xl w-14 h-14 shadow-xl flex items-center justify-center"
+        : "text-sm h-[30px]"}>{action === "add" ? "추가" : "수정"}</Button
     >
   </Sheet.Trigger>
   <Sheet.Content side="right" class="flex flex-col justify-between">

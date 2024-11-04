@@ -2,7 +2,7 @@
   //components
   import * as Select from "$lib/components/ui/select";
   import { Badge } from "$lib/components/ui/badge";
-  import DataEditDrawer from "./DataEditDrawer.svelte";
+  import DataEditDialog from "./DataEditDialog.svelte";
   import { badgeVariants } from "$lib/components/ui/badge";
   import DataDeleteDialog from "../../routes/data/dialogs/DataDeleteDialog.svelte";
 
@@ -117,7 +117,7 @@
     </div>
 
     <div>
-      <DataEditDrawer action="edit" value={data} />
+      <DataEditDialog action="edit" value={data} />
       {#if !data.isPublished}
         <DataDeleteDialog value={data} />
       {/if}

@@ -4,16 +4,13 @@
   //components
   import * as Dialog from "$lib/components/ui/dialog";
   import Menu from "./Menu.svelte";
+  import { Button, buttonVariants } from "$lib/components/ui/button";
 
   //assets
   import logo from "$lib/images/logo.png";
-
-  //dialogs
-  import DataEditDrawer from "$lib/components/DataEditDrawer.svelte";
-  import DataSearchDialog from "./DataSearchDialog.svelte";
+  import { enhance } from "$app/forms";
 
   //utils
-  import { buttonVariants } from "$lib/components/ui/button";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
 
@@ -81,21 +78,15 @@
             class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
             >Warchive</span
           >
-          <div
-            class="self-center text-md ml-2 whitespace-nowrap dark:text-white"
-          >
-            {$page.data?.user?.name ?? ""}
-          </div>
         </a>
       </div>
 
       {#if $page.data?.user}
         <div class="flex items-center">
-          <div class="flex items-center ms-3">
-            <div>
-              <DataSearchDialog />
-              <DataEditDrawer action="add" />
-            </div>
+          <div class="flex items-center ms-3 gap-2">
+            <form action="/?/logout" method="post" use:enhance>
+              <Button class="text-sm h-[30px]" type="submit">로그아웃</Button>
+            </form>
           </div>
         </div>
       {/if}

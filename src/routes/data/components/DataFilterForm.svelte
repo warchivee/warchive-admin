@@ -94,7 +94,6 @@
   };
 
   const formData: Record<string, any> = {
-    title: "",
     label: [],
     categories: [],
     updateDate: null,
@@ -117,7 +116,6 @@
   }
 
   function resetAllItems() {
-    formData.title = "";
     formData.label = [];
     formData.categories = [];
     formData.updateDate = null;
@@ -239,8 +237,6 @@
         variant="ghost"
         on:click={() => {
           resetAllItems();
-          handleSubmit(formData);
-          open = false;
         }}>전체 초기화</Button
       >
     </Drawer.Footer>

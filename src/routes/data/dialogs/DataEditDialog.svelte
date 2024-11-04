@@ -381,6 +381,10 @@
               autocomplete="off"
               bind:value={formData.note}
             />
+            <p class="text-muted-foreground text-xs">
+              ※ 보류/탈락 사유 혹은 데이터 관련 특이사항을 적는 곳입니다. 질문은
+              디스코드 채널을 이용해주세요.
+            </p>
           </div>
         </form>
       </ScrollArea>

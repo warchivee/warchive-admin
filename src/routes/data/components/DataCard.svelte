@@ -2,13 +2,13 @@
   //components
   import * as Select from "$lib/components/ui/select";
   import { Badge } from "$lib/components/ui/badge";
-  import DataEditDialog from "./DataEditDialog.svelte";
   import { badgeVariants } from "$lib/components/ui/badge";
-  import DataDeleteDialog from "../../routes/data/dialogs/DataDeleteDialog.svelte";
+  import DataDeleteDialog from "../dialogs/DataDeleteDialog.svelte";
+  import DataEditDialog from "../dialogs/DataEditDialog.svelte";
 
   //utils
-  import type { Wata } from "../../routes/data/type";
-  import DataLabelEditDialog from "../../routes/data/dialogs/DataLabelEditDialog.svelte";
+  import type { Wata } from "../type";
+  import DataLabelEditDialog from "../dialogs/DataLabelEditDialog.svelte";
   import axiosInstance from "$lib/axios";
   import { toast } from "svelte-sonner";
 

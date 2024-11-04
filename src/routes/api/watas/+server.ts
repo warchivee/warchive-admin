@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const {
       title,
       creators,
-      genre,
+      genreId,
       thumbnail,
       thumbnailCard,
       thumbnailBook,
@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         data: {
           title,
           creators,
-          genre,
+          genreId,
           thumbnail,
           thumbnailCard,
           thumbnailBook,

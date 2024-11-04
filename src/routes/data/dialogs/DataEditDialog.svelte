@@ -6,8 +6,8 @@
   import { Input } from "$lib/components/ui/input/index.js";
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
   import Button from "$lib/components/ui/button/button.svelte";
-  import KeywordSelect from "./KeywordSelect.svelte";
-  import PlatformInput from "../../routes/data/components/PlatformInput.svelte";
+  import KeywordSelect from "../../../lib/components/KeywordSelect.svelte";
+  import PlatformInput from "../components/PlatformInput.svelte";
   import { Label } from "$lib/components/ui/label/index.js";
   import { Switch } from "$lib/components/ui/switch/index.js";
 
@@ -24,9 +24,9 @@
   import { cn } from "$lib/utils";
   import axiosInstance from "$lib/axios";
   import { addWata, updateWata } from "$lib/stores/watas.store";
-  import ImageCrop from "../../routes/data/components/ImageCrop.svelte";
+  import ImageCrop from "../components/ImageCrop.svelte";
   import resizeImage from "$lib/thumbnail/resize";
-  import type { Wata } from "../../routes/data/type";
+  import type { Wata } from "../type";
 
   //vatiables
   export let action: string = "add";
@@ -140,8 +140,10 @@
         formData.thumbnail = uploaded;
       }
 
+      const { genre, ...restOfFormData } = formData;
+
       const requestBody = {
-        ...formData,
+        ...restOfFormData,
         genreId: formData.genre?.id,
       };
 

@@ -1,5 +1,5 @@
 export const authenticate = async (locals: App.Locals) => {
-  if (!locals.user) {
+  if (!locals.user?.id) {
     throw new Error("Unauthorized access");
   }
 

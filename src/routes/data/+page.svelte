@@ -3,10 +3,10 @@
   import * as Pagination from "$lib/components/ui/pagination";
   import Button from "$lib/components/ui/button/button.svelte";
   import Input from "$lib/components/ui/input/input.svelte";
-  import DataCard from "$lib/components/DataCard.svelte";
+  import DataCard from "./components/DataCard.svelte";
   import DataFilterForm from "./components/DataFilterForm.svelte";
-  import DataEditDialog from "$lib/components/DataEditDialog.svelte";
-  import DataCardSkeleton from "$lib/components/DataCardSkeleton.svelte";
+  import DataEditDialog from "./dialogs/DataEditDialog.svelte";
+  import DataCardSkeleton from "./components/DataCardSkeleton.svelte";
 
   //utils
   import { onMount } from "svelte";

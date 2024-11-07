@@ -140,11 +140,13 @@
         formData.thumbnail = uploaded;
       }
 
-      const { genre, ...restOfFormData } = formData;
+      const { genre, keywords, cautions, ...restOfFormData } = formData;
 
       const requestBody = {
         ...restOfFormData,
-        genreId: formData.genre?.id,
+        genre: {id: formData.genre?.id},
+        keywords: formData.keywords?.map((keyword) => {return {id: keyword.id}}),
+        cautions: formData.cautions?.map((caution) => {return {id: caution.id}}),
       };
 
       if (action === "add") {

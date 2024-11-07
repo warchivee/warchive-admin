@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     const {
       title,
       creators,
-      genreId,
+      genre,
       thumbnail,
       thumbnailCard,
       thumbnailBook,
@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         data: {
           title,
           creators,
-          genreId,
+          genreId: genre.id,
           thumbnail,
           thumbnailCard,
           thumbnailBook,
@@ -43,9 +43,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (platforms && platforms.length > 0) {
         await tx.wataPlatformMapping.createMany({
-          data: platforms.map((platformId: number) => ({
+          data: platforms.map((platform) => ({
             wataId: newWata.id,
-            platformId,
+            platformId: platform.id,
+            url: platform.url,
             adderId: +userId,
             updaterId: +userId,
           })),
@@ -54,9 +55,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (keywords && keywords.length > 0) {
         await tx.wataKeywordMapping.createMany({
-          data: keywords.map((keywordId: number) => ({
+          data: keywords.map((keyword) => ({
             wataId: newWata.id,
-            keywordId,
+            keywordId: keyword.id,
             adderId: +userId,
             updaterId: +userId,
           })),
@@ -65,9 +66,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (cautions && cautions.length > 0) {
         await tx.wataCautionMapping.createMany({
-          data: cautions.map((cautionId: number) => ({
+          data: cautions.map((caution) => ({
             wataId: newWata.id,
-            cautionId,
+            cautionId: caution.id,
             adderId: +userId,
             updaterId: +userId,
           })),

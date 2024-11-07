@@ -20,7 +20,7 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
     const {
       title,
       creators,
-      genreId,
+      genre,
       thumbnail,
       thumbnailCard,
       thumbnailBook,
@@ -39,7 +39,7 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
         data: {
           title,
           creators,
-          genreId,
+          genreId: genre.id,
           thumbnail,
           thumbnailCard,
           thumbnailBook,

@@ -144,9 +144,13 @@
 
       const requestBody = {
         ...restOfFormData,
-        genre: {id: formData.genre?.id},
-        keywords: formData.keywords?.map((keyword) => {return {id: keyword.id}}),
-        cautions: formData.cautions?.map((caution) => {return {id: caution.id}}),
+        genre: { id: formData.genre?.id },
+        keywords: formData.keywords?.map((keyword) => {
+          return { id: keyword.id };
+        }),
+        cautions: formData.cautions?.map((caution) => {
+          return { id: caution.id };
+        }),
       };
 
       if (action === "add") {
@@ -393,18 +397,18 @@
     </div>
 
     <Sheet.Footer class="flex flex-row-reverse">
-      <Button class="w-[120px]" on:click={handleSubmit} disabled={loading}>
-        {#if loading}
-          <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
-        {/if}
-        확인
-      </Button>
       <Button
         disabled={loading}
         class="w-[120px]"
         variant="ghost"
         on:click={handleReset}>전체 초기화</Button
       >
+      <Button class="w-[120px]" on:click={handleSubmit} disabled={loading}>
+        {#if loading}
+          <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
+        {/if}
+        확인
+      </Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

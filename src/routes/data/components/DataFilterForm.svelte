@@ -199,17 +199,18 @@
     <div class="mt-4">
       <Button
         class="w-[120px]"
-        on:click={() => {
-          handleSubmit(formData);
-          open = false;
-        }}>검색</Button
-      >
-      <Button
-        class="w-[120px]"
         variant="ghost"
         on:click={() => {
           resetAllItems();
         }}>전체 초기화</Button
+      >
+
+      <Button
+        class="w-[120px]"
+        on:click={() => {
+          handleSubmit(formData);
+          open = false;
+        }}>검색</Button
       >
     </div>
   </Popover.Content>

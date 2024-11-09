@@ -5,6 +5,7 @@
 
   //icons
   import ReloadIcon from "lucide-svelte/icons/loader-circle";
+  import RemoveIcon from "lucide-svelte/icons/trash-2";
 
   //utils
   import { toast } from "svelte-sonner";
@@ -48,9 +49,9 @@
 
 <Dialog.Root closeOnOutsideClick={!loading} bind:open>
   <Dialog.Trigger
-    class={cn("text-sm h-[30px]", buttonVariants({ variant: "ghost" }))}
+    class={cn("text-gray-500", buttonVariants({ variant: "ghost" }), "p-2")}
   >
-    삭제
+    <RemoveIcon class="h-4 w-4" />
   </Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px] space-y-2">
     <Dialog.Header>

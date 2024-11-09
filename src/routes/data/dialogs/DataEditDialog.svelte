@@ -13,6 +13,7 @@
 
   //icons
   import ReloadIcon from "lucide-svelte/icons/loader-circle";
+  import EditIcon from "lucide-svelte/icons/pencil";
 
   //utils
   import cloneDeep from "lodash/cloneDeep";
@@ -200,10 +201,16 @@
   >
     <Button
       builders={[builder]}
+      variant="ghost"
       class={action === "add"
         ? "rounded-xl w-14 h-14 shadow-xl flex items-center justify-center"
-        : "text-sm h-[30px]"}>{action === "add" ? "추가" : "수정"}</Button
-    >
+        : "p-2 text-gray-500"}
+      >{#if action === "add"}
+        추가
+      {:else}
+        <EditIcon class="h-4 w-4" />
+      {/if}
+    </Button>
   </Sheet.Trigger>
   <Sheet.Content side="right" class="flex flex-col justify-between">
     <Sheet.Header>

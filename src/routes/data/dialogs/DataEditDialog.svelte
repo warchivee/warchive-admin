@@ -194,14 +194,20 @@
     : { label: "", value: -1 };
 </script>
 
-<Sheet.Root closeOnOutsideClick={!loading} bind:open>
+<Sheet.Root
+  closeOnOutsideClick={!loading}
+  onOpenChange={() => {
+    handleReset();
+  }}
+  bind:open
+>
   <Sheet.Trigger
     let:builder
     class={action === "add" ? "fixed bottom-6 right-6" : ""}
   >
     <Button
       builders={[builder]}
-      variant="ghost"
+      variant={action === "add" ? "default" : "ghost"}
       class={action === "add"
         ? "rounded-xl w-14 h-14 shadow-xl flex items-center justify-center"
         : "p-2 text-gray-500"}

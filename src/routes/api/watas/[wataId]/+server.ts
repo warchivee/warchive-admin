@@ -67,7 +67,8 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
         tx.wataPlatformMapping,
         "platformId",
         +wataId,
-        platforms
+        platforms,
+        true
       );
 
       return updateWata;
@@ -160,7 +161,8 @@ async function updateMappings(
   mappingTable: any,
   mappingField: string,
   wataId: number,
-  newItems: { id: number; url?: string }[]
+  newItems: { id: number; url?: string }[],
+  enabledUpdate?: boolean
 ) {
   const existingMappings = await mappingTable.findMany({
     where: { wataId },
@@ -170,32 +172,63 @@ async function updateMappings(
   const existingItemIds = existingMappings.map(
     (mapping: any) => mapping[mappingField]
   );
+  const newItemIds = newItems?.map((ni) => ni.id);
 
-  const itemsToAdd = newItems.filter(({ id }) => !existingItemIds.includes(id));
+  const transactionOperations = [];
 
   const itemsToRemove = existingItemIds.filter(
-    (itemId: number) => !newItems?.map((ni) => ni.id)?.includes(itemId)
+    (itemId: number) => !newItemIds?.includes(itemId)
   );
-
   if (itemsToRemove.length > 0) {
-    await mappingTable.deleteMany({
-      where: {
-        wataId,
-        [mappingField]: {
-          in: itemsToRemove,
+    transactionOperations.push(
+      mappingTable.deleteMany({
+        where: {
+          wataId,
+          [mappingField]: { in: itemsToRemove },
         },
-      },
-    });
+      })
+    );
   }
 
+  
+  const itemsToAdd = newItems.filter(({ id }) => !existingItemIds.includes(id));
   if (itemsToAdd.length > 0) {
-    await mappingTable.createMany({
-      data: itemsToAdd.map(({ id, url }) => ({
-        wataId,
-        [mappingField]: id,
-        ...(url ? { url } : {}),
-      })),
-    });
+    transactionOperations.push(
+      mappingTable.createMany({
+        data: itemsToAdd.map(({ id, url }) => ({
+          wataId,
+          [mappingField]: id,
+          ...(url ? { url } : {}),
+        })),
+      })
+    );
+  }
+
+  if(enabledUpdate) {
+    const itemsToUpdate = newItems.filter(({ id }) => existingItemIds.includes(id));
+    if (itemsToUpdate.length > 0) {
+      transactionOperations.push(
+        ...itemsToUpdate.map(({ id, url }) =>
+          mappingTable.update({
+            where: {
+              [`wataId_${mappingField}`] : {
+                wataId,
+                [mappingField]: id,
+              }
+            },
+            data: {
+              [mappingField]: id,
+              ...(url ? { url } : {}),
+            },
+          })
+        )
+      );
+    }
+  }
+  
+
+  if (transactionOperations.length > 0) {
+    await Promise.all(transactionOperations); 
   }
 }
 

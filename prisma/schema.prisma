@@ -55,21 +55,21 @@ model Session {
   userId    String   @map("user_id") // userId 대신 account 필드 사용
   expiresAt DateTime @map("expires_at")
 
-  user      User    @relation("SessionToUser", fields: [userId], references: [account], onDelete: Cascade)
+  user User @relation("SessionToUser", fields: [userId], references: [account], onDelete: Cascade)
 
   @@map("session")
 }
 
 model Keyword {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique @db.VarChar(12)
-  description String?  @db.Text
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  adderId     Int?     @map("adder_id")
-  updaterId   Int?     @map("updater_id")
-  adder       User?    @relation("KeywordAdder", fields: [adderId], references: [id])
-  updater     User?    @relation("KeywordUpdater", fields: [updaterId], references: [id])
+  id                  Int                  @id @default(autoincrement())
+  name                String               @unique @db.VarChar(12)
+  description         String?              @db.Text
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  adderId             Int?                 @map("adder_id")
+  updaterId           Int?                 @map("updater_id")
+  adder               User?                @relation("KeywordAdder", fields: [adderId], references: [id])
+  updater             User?                @relation("KeywordUpdater", fields: [updaterId], references: [id])
   wataKeywordMappings WataKeywordMapping[] @relation("KeywordToWataKeywordMapping")
 
   @@map("keyword")
@@ -92,14 +92,14 @@ model Genre {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique @db.VarChar(12)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  adderId   Int?     @map("adder_id")
-  updaterId Int?     @map("updater_id")
-  adder     User?    @relation("CategoryAdder", fields: [adderId], references: [id])
-  updater   User?    @relation("CategoryUpdater", fields: [updaterId], references: [id])
+  id        Int        @id @default(autoincrement())
+  name      String     @unique @db.VarChar(12)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  adderId   Int?       @map("adder_id")
+  updaterId Int?       @map("updater_id")
+  adder     User?      @relation("CategoryAdder", fields: [adderId], references: [id])
+  updater   User?      @relation("CategoryUpdater", fields: [updaterId], references: [id])
   genres    Genre[]
   platforms Platform[]
 
@@ -107,61 +107,61 @@ model Category {
 }
 
 model Caution {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique @db.VarChar(12)
-  description String?  @db.Text
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  adderId   Int?     @map("adder_id")
-  updaterId Int?     @map("updater_id")
-  adder     User?    @relation("CautionAdder", fields: [adderId], references: [id])
-  updater   User?    @relation("CautionUpdater", fields: [updaterId], references: [id])
+  id                  Int                  @id @default(autoincrement())
+  name                String               @unique @db.VarChar(12)
+  description         String?              @db.Text
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  adderId             Int?                 @map("adder_id")
+  updaterId           Int?                 @map("updater_id")
+  adder               User?                @relation("CautionAdder", fields: [adderId], references: [id])
+  updater             User?                @relation("CautionUpdater", fields: [updaterId], references: [id])
   wataCautionMappings WataCautionMapping[] @relation("CautionToWataCautionMapping")
 
   @@map("caution")
 }
 
 model Platform {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique @db.VarChar(12)
-  orderTop  Boolean  @default(false) @map("order_top")
-  domain    String?  @db.VarChar(255)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  adderId   Int?     @map("adder_id")
-  updaterId Int?     @map("updater_id")
-  adder     User?    @relation("PlatformAdder", fields: [adderId], references: [id])
-  updater   User?    @relation("PlatformUpdater", fields: [updaterId], references: [id])
-  categoryId Int      @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
+  id                   Int                   @id @default(autoincrement())
+  name                 String                @unique @db.VarChar(12)
+  orderTop             Boolean               @default(false) @map("order_top")
+  domain               String?               @db.VarChar(255)
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+  adderId              Int?                  @map("adder_id")
+  updaterId            Int?                  @map("updater_id")
+  adder                User?                 @relation("PlatformAdder", fields: [adderId], references: [id])
+  updater              User?                 @relation("PlatformUpdater", fields: [updaterId], references: [id])
+  categoryId           Int                   @map("category_id")
+  category             Category              @relation(fields: [categoryId], references: [id])
   wataPlatformMappings WataPlatformMapping[] @relation("PlatformToWataPlatformMapping")
 
   @@map("platform")
 }
 
 model Wata {
-  id                Int                  @id @default(autoincrement())
-  title             String
-  creators          String?
-  genreId           Int?                 @map("genre_id")
-  genre             Genre?               @relation("GenreWatas", fields: [genreId], references: [id])
-  thumbnail         String?
-  thumbnailCard     Json?                @db.Json @map("thumbnail_card")
-  thumbnailBook     Json?                @db.Json @map("thumbnail_book")
-  label             String               @db.VarChar(20) @default("NEED_CHECK")
-  isPublished       Boolean              @default(false) @map("is_published")
-  noPlatform        Boolean              @default(false) @map("no_platform")
-  note              String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  adderId   Int?     @map("adder_id")
-  updaterId Int?     @map("updater_id")
-  adder     User?    @relation("WataAdder", fields: [adderId], references: [id])
-  updater   User?    @relation("WataUpdater", fields: [updaterId], references: [id])
+  id            Int      @id @default(autoincrement())
+  title         String
+  creators      String?
+  genreId       Int?     @map("genre_id")
+  genre         Genre?   @relation("GenreWatas", fields: [genreId], references: [id])
+  thumbnail     String?
+  thumbnailCard Json?    @map("thumbnail_card") @db.Json
+  thumbnailBook Json?    @map("thumbnail_book") @db.Json
+  label         String   @default("NEED_CHECK") @db.VarChar(20)
+  isPublished   Boolean  @default(false) @map("is_published")
+  noPlatform    Boolean  @default(false) @map("no_platform")
+  note          String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  adderId       Int?     @map("adder_id")
+  updaterId     Int?     @map("updater_id")
+  adder         User?    @relation("WataAdder", fields: [adderId], references: [id])
+  updater       User?    @relation("WataUpdater", fields: [updaterId], references: [id])
 
-  keywords          WataKeywordMapping[]
-  cautions          WataCautionMapping[]
-  platforms         WataPlatformMapping[]
+  keywords  WataKeywordMapping[]
+  cautions  WataCautionMapping[]
+  platforms WataPlatformMapping[]
 
   @@map("wata")
 }
@@ -170,8 +170,8 @@ model WataKeywordMapping {
   id        Int      @id @default(autoincrement())
   wataId    Int      @map("wata_id")
   keywordId Int      @map("keyword_id")
-  wata     Wata     @relation(fields: [wataId], references: [id])
-  keyword  Keyword  @relation("KeywordToWataKeywordMapping", fields: [keywordId], references: [id])
+  wata      Wata     @relation(fields: [wataId], references: [id])
+  keyword   Keyword  @relation("KeywordToWataKeywordMapping", fields: [keywordId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   adderId   Int?     @map("adder_id")
@@ -186,8 +186,8 @@ model WataCautionMapping {
   id        Int      @id @default(autoincrement())
   wataId    Int      @map("wata_id")
   cautionId Int      @map("caution_id")
-  wata     Wata     @relation(fields: [wataId], references: [id])
-  caution  Caution  @relation("CautionToWataCautionMapping", fields: [cautionId], references: [id])
+  wata      Wata     @relation(fields: [wataId], references: [id])
+  caution   Caution  @relation("CautionToWataCautionMapping", fields: [cautionId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   adderId   Int?     @map("adder_id")
@@ -199,18 +199,19 @@ model WataCautionMapping {
 }
 
 model WataPlatformMapping {
-  id          Int      @id @default(autoincrement())
-  wataId      Int      @map("wata_id")
-  platformId  Int     @map("platform_id")
-  url         String?
-  wata        Wata     @relation(fields: [wataId], references: [id])
-  platform    Platform @relation("PlatformToWataPlatformMapping", fields: [platformId], references: [id])
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  adderId     Int?     @map("adder_id")
-  updaterId   Int?     @map("updater_id")
-  adder       User?    @relation("WataPlatformAdder", fields: [adderId], references: [id])
-  updater     User?    @relation("WataPlatformUpdater", fields: [updaterId], references: [id])
+  id         Int      @id @default(autoincrement())
+  wataId     Int      @map("wata_id")
+  platformId Int      @map("platform_id")
+  url        String?
+  wata       Wata     @relation(fields: [wataId], references: [id])
+  platform   Platform @relation("PlatformToWataPlatformMapping", fields: [platformId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  adderId    Int?     @map("adder_id")
+  updaterId  Int?     @map("updater_id")
+  adder      User?    @relation("WataPlatformAdder", fields: [adderId], references: [id])
+  updater    User?    @relation("WataPlatformUpdater", fields: [updaterId], references: [id])
 
+  @@unique([wataId, platformId])
   @@map("wata_platform")
 }

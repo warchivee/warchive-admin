@@ -91,13 +91,26 @@
         },
       ],
     },
+    isPublished: {
+      name: "게시상태",
+      values: [
+        {
+          id: "Y",
+          name: "게시됨",
+        },
+        {
+          id: "N",
+          name: "게시되지않음",
+        },
+      ],
+    },
   };
 
   const formData: Record<string, any> = {
     label: [],
     categories: [],
     updateDate: null,
-    isPublished: null,
+    isPublished: [],
     needWriteItems: [],
   };
 
@@ -119,7 +132,7 @@
     formData.label = [];
     formData.categories = [];
     formData.updateDate = null;
-    formData.isPublished = null;
+    formData.isPublished = [];
     formData.needWriteItems = [];
   }
 </script>

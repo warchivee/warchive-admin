@@ -55,7 +55,10 @@
         ...(updateDate?.end && {
           updateEndDate: new Date(updateDate?.end)?.toLocaleDateString("en-CA"),
         }),
-        ...(isPublished && { isPublished }),
+        ...(isPublished?.length === 1 &&
+          isPublished.length > 0 && {
+            isPublished: isPublished[0],
+          }),
         ...(needWriteItems &&
           needWriteItems.length > 0 && {
             needWriteItems: needWriteItems.join(","),

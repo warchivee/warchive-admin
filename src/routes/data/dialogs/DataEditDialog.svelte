@@ -109,8 +109,6 @@
   };
 
   const handleSubmit = async () => {
-    loading = true;
-
     formData.title = formData.title.trim();
 
     if (formData.creators) {
@@ -127,7 +125,23 @@
       return;
     }
 
+    if (formData.platforms?.length > 0) {
+      const isNoUrl = formData.platforms.some((p) => {
+        if (!p?.url) {
+          toast.error(`${p?.name} 플랫폼 url을 입력해주세요.`);
+          return true;
+        }
+        return false;
+      });
+
+      if (isNoUrl) {
+        return;
+      }
+    }
+
     try {
+      loading = true;
+
       if (
         formData.thumbnail &&
         value.thumbnail !== formData.thumbnail &&

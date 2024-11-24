@@ -126,6 +126,14 @@
     }
 
     if (formData.platforms?.length > 0) {
+      const set = new Set(formData.platforms?.map((p) => p.id));
+      if (set?.size !== formData.platforms?.length) {
+        toast.error("중복된 플랫폼이 있습니다.");
+        return;
+      }
+    }
+
+    if (formData.platforms?.length > 0) {
       const isNoUrl = formData.platforms.some((p) => {
         if (!p?.url) {
           toast.error(`${p?.name} 플랫폼 url을 입력해주세요.`);

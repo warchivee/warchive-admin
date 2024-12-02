@@ -322,6 +322,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   }
   if (emptyFilter.includes("platforms")) {
     emptyConditions.push({
+      noPlatform: false,
       platforms: {
         none: {},
       },

@@ -29,6 +29,7 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
       keywords,
       cautions,
       platforms,
+      noPlatform
     } = await request.json();
 
     const updateWata = await db.$transaction(async (tx) => {
@@ -45,6 +46,7 @@ export const PATCH: RequestHandler = async ({ params, request, locals }) => {
           thumbnailBook,
           note,
           label,
+          noPlatform,
           updaterId: +userId,
         },
       });

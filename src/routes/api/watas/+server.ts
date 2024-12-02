@@ -1,7 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import {
   authenticate,
-  sendSuccessResponse,
   sendErrorResponse,
 } from "$lib/server/apiUtils";
 
@@ -23,6 +22,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       keywords,
       cautions,
       platforms,
+      noPlatform
     } = await request.json();
 
     const newWata = await db.$transaction(async (tx) => {
@@ -36,6 +36,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
           thumbnailBook,
           note,
           label,
+          noPlatform,
           adderId: +userId,
           updaterId: +userId,
         },
@@ -43,7 +44,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (platforms && platforms.length > 0) {
         await tx.wataPlatformMapping.createMany({
-          data: platforms.map((platform) => ({
+          data: platforms.map((platform: { id: any; url: any; }) => ({
             wataId: newWata.id,
             platformId: platform.id,
             url: platform.url,
@@ -55,7 +56,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (keywords && keywords.length > 0) {
         await tx.wataKeywordMapping.createMany({
-          data: keywords.map((keyword) => ({
+          data: keywords.map((keyword: { id: any; }) => ({
             wataId: newWata.id,
             keywordId: keyword.id,
             adderId: +userId,
@@ -66,7 +67,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (cautions && cautions.length > 0) {
         await tx.wataCautionMapping.createMany({
-          data: cautions.map((caution) => ({
+          data: cautions.map((caution: { id: any; }) => ({
             wataId: newWata.id,
             cautionId: caution.id,
             adderId: +userId,

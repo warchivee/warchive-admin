@@ -1,10 +1,12 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import {
-  authenticate,
-  sendErrorResponse,
-} from "$lib/server/apiUtils";
+import { authenticate, sendErrorResponse } from "$lib/server/apiUtils";
 
 import { db } from "$lib/server/db";
+import type { Wata } from "@prisma/client";
+
+const removeWhitespace = (str: string) => {
+  return str?.replace(/\s+/g, "");
+};
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   try {
@@ -22,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
       keywords,
       cautions,
       platforms,
-      noPlatform
+      noPlatform,
     } = await request.json();
 
     const newWata = await db.$transaction(async (tx) => {
@@ -44,7 +46,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (platforms && platforms.length > 0) {
         await tx.wataPlatformMapping.createMany({
-          data: platforms.map((platform: { id: any; url: any; }) => ({
+          data: platforms.map((platform: { id: any; url: any }) => ({
             wataId: newWata.id,
             platformId: platform.id,
             url: platform.url,
@@ -56,7 +58,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (keywords && keywords.length > 0) {
         await tx.wataKeywordMapping.createMany({
-          data: keywords.map((keyword: { id: any; }) => ({
+          data: keywords.map((keyword: { id: any }) => ({
             wataId: newWata.id,
             keywordId: keyword.id,
             adderId: +userId,
@@ -67,7 +69,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
       if (cautions && cautions.length > 0) {
         await tx.wataCautionMapping.createMany({
-          data: cautions.map((caution: { id: any; }) => ({
+          data: cautions.map((caution: { id: any }) => ({
             wataId: newWata.id,
             cautionId: caution.id,
             adderId: +userId,
@@ -163,177 +165,187 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 };
 
 export const GET: RequestHandler = async ({ url, locals }) => {
-  const pageSize = parseInt(url.searchParams.get("pageSize") || "10", 10);
-  const page = parseInt(url.searchParams.get("page") || "1", 10);
-
-  const skip = (page - 1) * pageSize;
-  const titleFilter = url.searchParams.get("title") || "";
-  const creatorFilter = url.searchParams.get("creators") || "";
-
-  const label = url.searchParams.get("label");
-  const labelFilter = label ? label.split(",") : [];
-
-  const category = url.searchParams.get("categories");
-  const categoryFilter = category
-    ? category
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
-    : [];
-
-  const genre = url.searchParams.get("genres");
-  const genreFilter = genre
-    ? genre
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
-    : [];
-
-  const keyword = url.searchParams.get("keywords");
-  const keywordFilter = keyword
-    ? keyword
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
-    : [];
-
-  const caution = url.searchParams.get("cautions");
-  const cautionFilter = caution
-    ? caution
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
-    : [];
-
-  const platform = url.searchParams.get("platforms");
-  const platformFilter = platform
-    ? platform
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
-    : [];
-
-  const startDateParam = url.searchParams.get("updateStartDate");
-  const startDate = startDateParam ? new Date(startDateParam) : undefined;
-
-  const endDateParam = url.searchParams.get("updateEndDate");
-  const endDate = endDateParam ? new Date(endDateParam) : undefined;
-
-  if (
-    (startDate && isNaN(startDate.getDate())) ||
-    (endDate && isNaN(endDate.getDate()))
-  ) {
-    return new Response("Invalid date format", { status: 400 });
-  }
-
-  const publishedParam = url.searchParams.get("isPublished") || "";
-  const publishedFilter =
-    publishedParam === "Y" ? true : publishedParam === "N" ? false : undefined;
-
-  const emptyFilter =
-    (url.searchParams.get("needWriteItems") || "").split(",") || [];
-
-  const whereClause: any = {
-    ...(titleFilter && {
-      title: {
-        contains: titleFilter,
-        mode: "insensitive",
-      },
-    }),
-    ...(creatorFilter && {
-      creators: {
-        contains: creatorFilter,
-        mode: "insensitive",
-      },
-    }),
-    ...(labelFilter &&
-      labelFilter.length > 0 && {
-        label: {
-          in: labelFilter,
-        },
-      }),
-    ...(categoryFilter &&
-      categoryFilter.length > 0 && {
-        genre: {
-          categoryId: {
-            in: categoryFilter,
-          },
-        },
-      }),
-    ...(genreFilter &&
-      genreFilter.length > 0 && {
-        genreId: {
-          in: genreFilter,
-        },
-      }),
-    ...(keywordFilter &&
-      keywordFilter.length > 0 && {
-        keywords: {
-          some: {
-            keywordId: {
-              in: keywordFilter,
-            },
-          },
-        },
-      }),
-    ...(cautionFilter &&
-      cautionFilter.length > 0 && {
-        cautions: {
-          some: {
-            cautionId: {
-              in: cautionFilter,
-            },
-          },
-        },
-      }),
-    ...(platformFilter &&
-      platformFilter.length > 0 && {
-        platforms: {
-          some: {
-            platformId: {
-              in: platformFilter,
-            },
-          },
-        },
-      }),
-    ...((startDate || endDate) && {
-      updatedAt: {
-        ...(startDate && { gte: startDate }),
-        ...(endDate && { lte: endDate }),
-      },
-    }),
-    ...(publishedFilter !== undefined && {
-      isPublished: publishedFilter,
-    }),
-  };
-
-  const emptyConditions: any[] = [];
-  if (emptyFilter.includes("title")) emptyConditions.push({ title: null });
-  if (emptyFilter.includes("creator")) emptyConditions.push({ creators: null });
-  if (emptyFilter.includes("genre")) emptyConditions.push({ genre: null });
-  if (emptyFilter.includes("thumbnail"))
-    emptyConditions.push({ thumbnail: null });
-  if (emptyFilter.includes("keywords")) {
-    emptyConditions.push({
-      keywords: {
-        none: {},
-      },
-    });
-  }
-  if (emptyFilter.includes("platforms")) {
-    emptyConditions.push({
-      noPlatform: false,
-      platforms: {
-        none: {},
-      },
-    });
-  }
-
-  if (emptyConditions.length > 0) {
-    whereClause.AND = [...(whereClause.AND || []), ...emptyConditions];
-  }
-
   try {
+    const pageSize = parseInt(url.searchParams.get("pageSize") || "10", 10);
+    const page = parseInt(url.searchParams.get("page") || "1", 10);
+
+    const skip = (page - 1) * pageSize;
+    const titleFilter = url.searchParams.get("title") || "";
+
+    let titleIds: number[] = [];
+
+    if (titleFilter) {
+      const rt = removeWhitespace(titleFilter)?.toLocaleLowerCase();
+
+      titleIds = (
+        await db.$queryRaw<
+          { id: number }[]
+        >`SELECT id FROM wata w WHERE REPLACE(LOWER(title), ' ', '') = ${rt}`
+      )?.map((i) => i.id);
+    }
+
+    const label = url.searchParams.get("label");
+    const labelFilter = label ? label.split(",") : [];
+
+    const category = url.searchParams.get("categories");
+    const categoryFilter = category
+      ? category
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
+      : [];
+
+    const genre = url.searchParams.get("genres");
+    const genreFilter = genre
+      ? genre
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
+      : [];
+
+    const keyword = url.searchParams.get("keywords");
+    const keywordFilter = keyword
+      ? keyword
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
+      : [];
+
+    const caution = url.searchParams.get("cautions");
+    const cautionFilter = caution
+      ? caution
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
+      : [];
+
+    const platform = url.searchParams.get("platforms");
+    const platformFilter = platform
+      ? platform
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
+      : [];
+
+    const startDateParam = url.searchParams.get("updateStartDate");
+    const startDate = startDateParam ? new Date(startDateParam) : undefined;
+
+    const endDateParam = url.searchParams.get("updateEndDate");
+    const endDate = endDateParam ? new Date(endDateParam) : undefined;
+
+    if (
+      (startDate && isNaN(startDate.getDate())) ||
+      (endDate && isNaN(endDate.getDate()))
+    ) {
+      return new Response("Invalid date format", { status: 400 });
+    }
+
+    const publishedParam = url.searchParams.get("isPublished") || "";
+    const publishedFilter =
+      publishedParam === "Y"
+        ? true
+        : publishedParam === "N"
+        ? false
+        : undefined;
+
+    const emptyFilter =
+      (url.searchParams.get("needWriteItems") || "").split(",") || [];
+
+    const whereClause: any = {
+      ...(titleIds &&
+        titleIds.length > 0 && {
+          id: {
+            in: titleIds,
+          },
+        }),
+      ...(labelFilter &&
+        labelFilter.length > 0 && {
+          label: {
+            in: labelFilter,
+          },
+        }),
+      ...(categoryFilter &&
+        categoryFilter.length > 0 && {
+          genre: {
+            categoryId: {
+              in: categoryFilter,
+            },
+          },
+        }),
+      ...(genreFilter &&
+        genreFilter.length > 0 && {
+          genreId: {
+            in: genreFilter,
+          },
+        }),
+      ...(keywordFilter &&
+        keywordFilter.length > 0 && {
+          keywords: {
+            some: {
+              keywordId: {
+                in: keywordFilter,
+              },
+            },
+          },
+        }),
+      ...(cautionFilter &&
+        cautionFilter.length > 0 && {
+          cautions: {
+            some: {
+              cautionId: {
+                in: cautionFilter,
+              },
+            },
+          },
+        }),
+      ...(platformFilter &&
+        platformFilter.length > 0 && {
+          platforms: {
+            some: {
+              platformId: {
+                in: platformFilter,
+              },
+            },
+          },
+        }),
+      ...((startDate || endDate) && {
+        updatedAt: {
+          ...(startDate && { gte: startDate }),
+          ...(endDate && { lte: endDate }),
+        },
+      }),
+      ...(publishedFilter !== undefined && {
+        isPublished: publishedFilter,
+      }),
+    };
+
+    const emptyConditions: any[] = [];
+    if (emptyFilter.includes("title")) emptyConditions.push({ title: null });
+    if (emptyFilter.includes("creator"))
+      emptyConditions.push({ creators: null });
+    if (emptyFilter.includes("genre")) emptyConditions.push({ genre: null });
+    if (emptyFilter.includes("thumbnail"))
+      emptyConditions.push({ thumbnail: null });
+    if (emptyFilter.includes("keywords")) {
+      emptyConditions.push({
+        keywords: {
+          none: {},
+        },
+      });
+    }
+    if (emptyFilter.includes("platforms")) {
+      emptyConditions.push({
+        noPlatform: false,
+        platforms: {
+          none: {},
+        },
+      });
+    }
+
+    if (emptyConditions.length > 0) {
+      whereClause.AND = [...(whereClause.AND || []), ...emptyConditions];
+    }
+
     const totalCount = await db.wata.count({
       where: whereClause,
     });
@@ -402,6 +414,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
         },
       ],
     });
+
     const formattedWatas = watas.map((wata) => ({
       ...wata,
       keywords: wata.keywords.map((k) => k.keyword),

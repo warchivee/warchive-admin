@@ -166,6 +166,24 @@ model Wata {
   @@map("wata")
 }
 
+model PublishWata {
+  id            Int      @id
+  title         String
+  creators      String?
+  thumbnail     String?
+  thumbnailCard Json?    @map("thumbnail_card") @db.Json
+  thumbnailBook Json?    @map("thumbnail_book") @db.Json
+  category      Json?    @db.Json
+  genre         Json?    @db.Json
+  keywords      Json?    @db.Json
+  cautions      Json?    @db.Json
+  platforms     Json?    @db.Json
+  createdAt     DateTime @map("created_at")
+  updatedAt     DateTime @map("updated_at")
+
+  @@map("publish_wata")
+}
+
 model WataKeywordMapping {
   id        Int      @id @default(autoincrement())
   wataId    Int      @map("wata_id")

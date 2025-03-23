@@ -7,14 +7,36 @@
   import Result from "../components/Result.svelte";
 
   //icons
+  import ReloadIcon from "lucide-svelte/icons/loader-circle";
   import Terminal from "lucide-svelte/icons/terminal";
 
+  //utils
+  import axiosInstance from "$lib/axios";
+  import { toast } from "svelte-sonner";
+
   //variables
+  let loading = false;
   let results = {
-    add_items: [],
-    update_items: [],
-    remove_items: [],
+    new_watas: [],
+    update_watas: [],
+    delete_watas: [],
   };
+
+  async function handleSubmit() {
+    try {
+      loading = true;
+
+      const requestBody = {
+        lastUpdatedAt: "",
+      };
+
+      const response = await axiosInstance.post("/publish", requestBody);
+
+      results = response.data;
+
+      toast.success("데이터를 업데이트했습니다.");
+    } catch (error) {}
+  }
 </script>
 
 <Alert.Root class="mb-4">
@@ -45,7 +67,11 @@
         </AlertDialog.Header>
         <AlertDialog.Footer>
           <AlertDialog.Cancel>취소</AlertDialog.Cancel>
-          <AlertDialog.Action>확인</AlertDialog.Action>
+          <AlertDialog.Action disabled={loading} on:click={handleSubmit}
+            >{#if loading}
+              <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
+            {/if}확인</AlertDialog.Action
+          >
         </AlertDialog.Footer>
       </AlertDialog.Content>
     </AlertDialog.Root>

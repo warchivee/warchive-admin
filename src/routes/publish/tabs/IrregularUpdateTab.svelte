@@ -9,19 +9,43 @@
   import Result from "../components/Result.svelte";
 
   //icons
+  import ReloadIcon from "lucide-svelte/icons/loader-circle";
   import Terminal from "lucide-svelte/icons/terminal";
 
   //utils
   import { toast } from "svelte-sonner";
+  import axiosInstance from "$lib/axios";
 
   //variables
+  let loading = false;
   let input: string = "";
   let titles: string[] = [];
   let results = {
-    add_items: [],
-    update_items: [],
-    remove_items: [],
+    new_watas: [],
+    update_watas: [],
+    delete_watas: [],
   };
+
+  async function handleSubmit() {
+    if (!titles || titles?.length <= 0) {
+      toast.message("업데이트할 작품명을 입력해주세요.");
+    }
+
+    try {
+      loading = true;
+
+      const requestBody = {
+        titles,
+        lastUpdatedAt: "",
+      };
+
+      const response = await axiosInstance.post("/publish", requestBody);
+
+      results = response.data;
+
+      toast.success("데이터를 업데이트했습니다.");
+    } catch (error) {}
+  }
 </script>
 
 <Alert.Root class="mb-4">
@@ -115,8 +139,12 @@
               </AlertDialog.Description>
             </AlertDialog.Header>
             <AlertDialog.Footer>
-              <AlertDialog.Cancel>취소</AlertDialog.Cancel>
-              <AlertDialog.Action>확인</AlertDialog.Action>
+              <AlertDialog.Cancel disabled={loading}>취소</AlertDialog.Cancel>
+              <AlertDialog.Action disabled={loading} on:click={handleSubmit}
+                >{#if loading}
+                  <ReloadIcon class="mr-2 h-4 w-4 animate-spin" />
+                {/if}확인</AlertDialog.Action
+              >
             </AlertDialog.Footer>
           </AlertDialog.Content>
         </AlertDialog.Root>

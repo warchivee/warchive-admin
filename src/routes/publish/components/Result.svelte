@@ -5,15 +5,15 @@
 
   //variables
   export const results: Record<string, string[]> = {
-    add_items: [],
-    update_items: [],
-    remove_items: [],
+    new_watas: [],
+    update_watas: [],
+    delete_watas: [],
   };
 
   const statusMap = {
-    add_items: "게시",
-    update_items: "수정",
-    remove_items: "게시내림",
+    new_watas: "게시",
+    update_watas: "수정",
+    delete_watas: "게시내림",
   };
 
   const tableDatas = Object.entries(results).flatMap(([key, items]) =>

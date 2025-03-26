@@ -175,12 +175,11 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     let titleIds: number[] = [];
 
     if (titleFilter) {
-      const rt = removeWhitespace(titleFilter)?.toLocaleLowerCase();
-
       titleIds = (
-        await db.$queryRaw<
-          { id: number }[]
-        >`SELECT id FROM wata w WHERE REPLACE(LOWER(title), ' ', '') = ${rt}`
+        await db.$queryRawUnsafe<{ id: number }[]>(
+          `SELECT id FROM wata w WHERE REPLACE(title, ' ', '') ILIKE $1`,
+          `%${removeWhitespace(titleFilter)}%`
+        )
       )?.map((i) => i.id);
     }
 
